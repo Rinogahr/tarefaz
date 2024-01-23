@@ -4,7 +4,7 @@ function PerfilComponent({image, name, infoTxt, btTxt, perfilBtClick}) {
     return(
         <div className={perfilStyle.perfilContainer}>
             <div className={perfilStyle.perfilFoto}>
-                <img src={image}/>
+                <img src={image} alt="avatar"/>
             </div>
             <div className={perfilStyle.perfilName}>
                 <h3>{name}</h3>
