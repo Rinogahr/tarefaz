@@ -1,0 +1,33 @@
+.atalhoContainer{
+    border: solid 1px;
+    width: 25rem;
+    border-radius: 1rem;
+    /* color: #fafafa; */
+    margin: 1rem;
+    text-align: center;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.atalhoContainer h3{
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+
+[greencolor] {
+    background-color: rgb(149, 237, 179) !important; 
+}
+[bluecolor] {
+    background-color: rgb(88, 168, 252) !important;
+}
+[oragecolor] {
+    background-color: rgb(252, 189, 144) !important;
+}
+[redcolor] {
+    background-color: rgb(235, 89, 118) !important;
+}
+[purplecolor] {
+    background-color: rgb(190, 121, 242) !important;
+}
