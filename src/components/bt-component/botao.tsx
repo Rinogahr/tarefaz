@@ -10,8 +10,8 @@ type botaoProps = {
 export const Botao = (bt: botaoProps) => {
     return(
         <div className={botaoStyle.btContainer} onClick={bt.onClick}>
-            <h3>{bt.valor}</h3>
-            <h4>{bt.titulo}</h4>
+            <h4>{bt.valor}</h4>
+            <h6>{bt.titulo}</h6>
         </div>
     )
 }

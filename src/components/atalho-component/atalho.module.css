@@ -1,9 +1,16 @@
+.greencolor { background-color: rgb(149, 237, 179) !important; box-shadow: 1px 5px 5px 0px rgb(149, 237, 179);}
+.bluecolor { background-color: rgb(88, 168, 252) !important; box-shadow: 1px 5px 5px 0px rgb(88, 168, 252);}
+.oragecolor { background-color: rgb(252, 189, 144) !important; box-shadow: 1px 5px 5px 0px rgb(252, 189, 144);}
+.redcolor { background-color: rgb(235, 89, 118) !important; box-shadow: 1px 5px 5px 0px rgb(235, 89, 118);}
+.purplecolor { background-color: rgb(190, 121, 242) !important; box-shadow: 1px 5px 5px 0px rgb(190, 121, 242);}
+.textColorDark{ color: #000; }
+.textColorWhite{ color: #fafafa; }
+
 .atalhoContainer{
-    border: solid 1px;
-    width: 25rem;
+    width: 10rem;
+    height: 2rem;
     border-radius: 1rem;
-    /* color: #fafafa; */
-    margin: 1rem;
+    margin: 0.5rem;
     text-align: center;
     padding: 1rem;
     display: flex;
@@ -16,18 +23,41 @@
     font-size: 12px;
 }
 
-[greencolor] {
-    background-color: rgb(149, 237, 179) !important; 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .atalhoContainer{
+        width: auto;
+    }
+    .atalhoContainer h3{
+        font-size: 9px;
+    }
 }
-[bluecolor] {
-    background-color: rgb(88, 168, 252) !important;
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .homeContainer{
+        /* background-color: rgb(255, 0, 0); */
+      }
 }
-[oragecolor] {
-    background-color: rgb(252, 189, 144) !important;
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .homeContainer{
+        /* background-color: rgb(140, 0, 255); */
+      }
 }
-[redcolor] {
-    background-color: rgb(235, 89, 118) !important;
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .homeContainer{
+        /* background-color: rgb(255, 238, 0); */
+      }
 }
-[purplecolor] {
-    background-color: rgb(190, 121, 242) !important;
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .homeContainer{
+        /* background-color: rgb(255, 145, 0); */
+      }
 }
+

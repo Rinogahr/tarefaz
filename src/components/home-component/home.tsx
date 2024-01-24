@@ -14,18 +14,22 @@ export const Home = () =>{
     return(
         <div className={homeStyle.homeContainer}>
             <div className={homeStyle.homeChildren}>
-                <UserDados
-                    userImg={fred}
-                    name="Pedro Algusto"
-                    info="27 Ano - Brasília"
-                    btEdite={ ()=> handleEditPerfil()}
-                />
-                <div className={homeStyle.atalhosConteiner}>
-                    <Atalho titulo="Minhas tarefas" bgColor='redcolor'/>
-                    <Atalho titulo="Nova tarefa"/>
-                    <Atalho titulo="Concluidas"/>
-                    <Atalho titulo="Andamento"/>
-                    <Atalho titulo="Atrazadas"/>
+                <div className={homeStyle.dadosPerfil}>
+                    <UserDados
+                        userImg={fred}
+                        name="Pedro Algusto"
+                        info="27 Ano - Brasília"
+                        btEdite={ ()=> handleEditPerfil()}
+                    />
+                </div>
+                <div className={homeStyle.btAtalhos}>
+                    <Atalho titulo="Nova tarefa" bgColor="bluecolor" bgTxtColor="textColorWhite"/>
+                    <Atalho titulo="Concluidas" bgColor="greencolor" bgTxtColor="textColorWhite"/>
+                    <Atalho titulo=" Em andamento" bgColor="oragecolor" bgTxtColor="textColorDark"/>
+                    <Atalho titulo="Atrasadas" bgColor="purplecolor" bgTxtColor="textColorDark"/>
+                </div>
+                <div className={homeStyle.dashboard}>
+
                 </div>
             </div>
         </div>        

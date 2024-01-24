@@ -1,5 +1,5 @@
-.container{
-    width: 30vw;
+.userDadoscontainer{
+    width: 100vw;
     height: auto;
     background: linear-gradient(
         95deg,
@@ -10,47 +10,97 @@
     flex-direction: column;
 }
 
-.container div:first-child{
+.userDadoscontainerhildren{
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
 }
-.container div:first-child img{
+.profileEdit{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+}
+
+.userDadoscontainerImg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+.userDadoscontainerImg img{
     width: 7rem;
     height: 7rem;
     border-radius: 50%;
     border: solid 0.3rem #fafafa;
     margin: 1rem;
 }
-.container div:first-child div:nth-child(2){
+
+
+
+.infoDados{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.container div:first-child div:nth-child(2) h1{
+.infoDados h1{
     color: #fafafa;
     padding: 0;
     margin: 0;
     font-family: sans-serif;
 }
 
-.container div:first-child div:nth-child(2) b{
+.infoDados b{
     color: #fafafa;
     font-size: 12px;
     font-family: monospace;
     font-weight: 100;
 }
 
-.container div:first-child div:nth-child(3) {
-    width: 5rem;
+.btContainer{
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem;
 }
 
-.btContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .btContainer{
+        /* justify-content: space-between; */
+      }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .btContainer{
+        /* justify-content: space-evenly; */
+      }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .userDadoscontainer{
+        /* background: rgb(140, 0, 255); */
+      }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .userDadoscontainer{
+        /* background: rgb(255, 238, 0); */
+      }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .btContainer{
+        /*  */
+      }
 }

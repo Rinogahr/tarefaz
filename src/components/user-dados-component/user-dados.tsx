@@ -29,19 +29,19 @@ export const UserDados = (props : userProps) => {
     }
 
     return(
-        <div className={userDadosStyle.container}>
-            <div>
-                <div>
-                    <img alt='perfilImg' src={props.userImg}/>
-                </div>
-                <div>
-                    <h1>{props.name}</h1>
-                    <b>{props.info}</b>
-                </div>
-                <div>
+        <div className={userDadosStyle.userDadoscontainer}>
+            <div className={userDadosStyle.userDadoscontainerhildren}>
+                <div className={userDadosStyle.profileEdit}>
                     <IconButton aria-label='Perfil' onClick={props.btEdite}>
                         <BiEdit color='#fafafa'/>
                     </IconButton>
+                </div>
+                <div className={userDadosStyle.userDadoscontainerImg}>
+                    <img alt='perfilImg' src={props.userImg}/>
+                </div>
+                <div className={userDadosStyle.infoDados}>
+                    <h1>{props.name}</h1>
+                    <b>{props.info}</b>
                 </div>
             </div>
             <div className={userDadosStyle.btContainer}>
