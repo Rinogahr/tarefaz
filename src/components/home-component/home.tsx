@@ -23,13 +23,30 @@ export const Home = () =>{
                     />
                 </div>
                 <div className={homeStyle.btAtalhos}>
-                    <Atalho titulo="Nova tarefa" bgColor="bluecolor" bgTxtColor="textColorWhite"/>
-                    <Atalho titulo="Concluidas" bgColor="greencolor" bgTxtColor="textColorWhite"/>
-                    <Atalho titulo=" Em andamento" bgColor="oragecolor" bgTxtColor="textColorDark"/>
-                    <Atalho titulo="Atrasadas" bgColor="purplecolor" bgTxtColor="textColorDark"/>
+                    <Atalho model="modeloUm" titulo="Atrasadas" bgColor="paleGreen" bgTxtColor="textColorDark"/>
+                    <Atalho model="modeloUm" titulo="Nova tarefa" bgColor="lightSalmon" bgTxtColor="textColorWhite"/>
+                    <Atalho model="modeloUm" titulo="Concluidas" bgColor="mediumPurple" bgTxtColor="textColorWhite"/>
+                    <Atalho model="modeloUm" titulo=" Em andamento" bgColor="paleVioletRed" bgTxtColor="textColorDark"/>
+                    <Atalho model="modeloUm" titulo="Atrasadas" bgColor="cornflowerBlue" bgTxtColor="textColorDark"/>
                 </div>
                 <div className={homeStyle.dashboard}>
-
+                    <div className={homeStyle.shotsContainer}>
+                        <div>
+                            <h1>Dashboard</h1>
+                        </div>
+                        <div>
+                            <div>bt1</div>
+                            <div>bt2</div>
+                        </div>
+                    </div>
+                    <div className={homeStyle.atalho2Container}>
+                        <Atalho model="modeloDois" titulo="botão atalho - 1" bgColor="aquamarine"/>
+                        <Atalho model="modeloDois" titulo="botão atalho - 2" bgColor="cornflowerBlue"/>
+                        <Atalho model="modeloDois" titulo="botão atalho - 3" bgColor="lightPink"/>
+                        <Atalho model="modeloDois" titulo="botão atalho - 4" bgColor="lightSteelBlue"/>
+                        <Atalho model="modeloDois" titulo="botão atalho - 5" bgColor="paleTurquoise"/>
+                        <Atalho model="modeloDois" titulo="botão atalho - 6" bgColor="sandyBrown"/>
+                    </div>
                 </div>
             </div>
         </div>        
