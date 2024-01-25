@@ -31,7 +31,7 @@
 }
 
 .atalhoContainerModelo2{
-    width: 10rem;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,6 +46,9 @@
     }
     .atalhoContainer h3{
         font-size: 9px;
+    }
+    .atalhoContainerModelo2{
+        width: auto;
     }
 }
 

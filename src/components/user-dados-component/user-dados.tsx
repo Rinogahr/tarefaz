@@ -16,28 +16,29 @@ export const UserDados = (props : userProps) => {
     const history = useNavigate();
 
     function verMinhasTarefas(params) {
-
         history(`/task/${params}`);
     }
 
-    function verMinhasTarefasConcluidas() {
-        alert('indo pra tela de minha tarefa concluidas')
+    function verTarefasConcluidas(params) {
+        history(`/task/${params}`);
     }
 
-    function verTodasTarefas() {
-        alert('indo pra tela de todas tarefa')
+    function verTodasTarefas(params) {
+        history(`/task/${params}`);
     }
+
+    function clickPath() { history('/') }
 
     return(
         <div className={userDadosStyle.userDadoscontainer}>
             <div className={userDadosStyle.userDadoscontainerhildren}>
                 <div className={userDadosStyle.profileEdit}>
-                    <IconButton aria-label='Perfil' onClick={props.btEdite}>
+                    <IconButton aria-label='Perfil' onClick={props.btEdite} >
                         <BiEdit color='#fafafa'/>
                     </IconButton>
                 </div>
                 <div className={userDadosStyle.userDadoscontainerImg}>
-                    <img alt='perfilImg' src={props.userImg}/>
+                    <img alt='perfilImg' src={props.userImg} onClick={() => {clickPath()}}/>
                 </div>
                 <div className={userDadosStyle.infoDados}>
                     <h1>{props.name}</h1>
@@ -45,9 +46,9 @@ export const UserDados = (props : userProps) => {
                 </div>
             </div>
             <div className={userDadosStyle.btContainer}>
-                <Botao titulo='Minhas tarefas' valor={648} onClick={ () => verMinhasTarefas(this)}/>
-                <Botao titulo='Tarefas concluidas' valor={100} onClick={ () => verMinhasTarefasConcluidas()}/>
-                <Botao titulo='Todas as tarefas' valor={648} onClick={ () => verTodasTarefas()}/>
+                <Botao titulo='Minhas tarefas' valor={648} onClick={ () => verMinhasTarefas(1)}/>
+                <Botao titulo='Tarefas concluidas' valor={100} onClick={ () => verTarefasConcluidas(1)}/>
+                <Botao titulo='Todas as tarefas' valor={648} onClick={ () => verTodasTarefas('all')}/>
             </div>
         </div>
     );
