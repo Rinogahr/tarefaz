@@ -46,7 +46,7 @@ export const UserDados = (props : userProps) => {
                 </div>
             </div>
             <div className={userDadosStyle.btContainer}>
-                <Botao titulo='Minhas tarefas' valor={648} onClick={ () => verMinhasTarefas(1)}/>
+                <Botao titulo='Minhas tarefas' valor={648} onClick={ () => verMinhasTarefas('Mark Zunkeberg')}/>
                 <Botao titulo='Tarefas concluidas' valor={100} onClick={ () => verTarefasConcluidas(1)}/>
                 <Botao titulo='Todas as tarefas' valor={648} onClick={ () => verTodasTarefas('all')}/>
             </div>

@@ -14,14 +14,31 @@ export const Home = () =>{
 
    async function renderUsuarioLogado(params){
         console.log(params);
-        const usuario = params.map((u) => {
-            return{
-                usuario : u.usuario,
-                tarefas : u.filter( ( t ) => t.usuario.id === u.usuario.id) 
-            }
-        })
+       // Objeto para armazenar usuários únicos
+        const usuariosUnicos = {};
 
-        console.log("usuario => ", usuario);
+        // Filtrar usuários únicos e armazenar no objeto 'usuariosUnicos'
+        params.forEach(tarefa => {
+            const usuarioId = tarefa.usuario[0].id;
+            if (!usuariosUnicos[usuarioId]) {
+                usuariosUnicos[usuarioId] = tarefa.usuario[0];
+            }
+        });
+
+        // Mapear as tarefas originalmente fornecidas e associar cada tarefa ao usuário correspondente
+        const tarefasFiltradas = params.map(tarefa => {
+            const usuarioId = tarefa.usuario[0].id;
+            return {
+                usuario: [usuariosUnicos[usuarioId]],
+                titulo: tarefa.titulo,
+                descricao: tarefa.descricao,
+                dataInicio: tarefa.dataInicio,
+                dataFim: tarefa.dataFim,
+                feito: tarefa.feito,
+            };
+        });
+
+        console.log(tarefasFiltradas);
     }
     
     renderUsuarioLogado(task.tarefasDiarias);
