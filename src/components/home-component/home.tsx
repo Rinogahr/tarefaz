@@ -38,7 +38,8 @@ export const Home = () =>{
             };
         });
 
-        console.log(tarefasFiltradas);
+        console.table(
+            {"tarefas":tarefasFiltradas, "unicoUsuario": usuariosUnicos});
     }
     
     renderUsuarioLogado(task.tarefasDiarias);
