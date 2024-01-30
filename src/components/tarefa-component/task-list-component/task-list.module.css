@@ -1,3 +1,19 @@
+.taskColor1 { background-color: rgb(149, 237, 179) !important; box-shadow: 1px 5px 5px 0px rgb(149, 237, 179);}
+.taskColor2 { background-color: rgb(88, 168, 252) !important; box-shadow: 1px 5px 5px 0px rgb(88, 168, 252);}
+.taskColor3 { background-color: rgb(252, 189, 144) !important; box-shadow: 1px 5px 5px 0px rgb(252, 189, 144);}
+.taskColor4 { background-color: rgb(235, 89, 118) !important; box-shadow: 1px 5px 5px 0px rgb(235, 89, 118);}
+.taskColor5 { background-color: rgb(190, 121, 242) !important; box-shadow: 1px 5px 5px 0px rgb(190, 121, 242);}
+.textColorDark{ color: #000000; }
+.textColorWhite{ color: #fafafa;  text-shadow: 0 3px 1px #000000;}
+
+.taskColor6 { background-color: rgb(118, 232, 194) !important; box-shadow: 1px 5px 5px 0px rgb(118, 232, 194);}
+.taskColor7 { background-color: rgb(189, 189, 242) !important; box-shadow: 1px 5px 5px 0px rgb(189, 189, 242);}
+.taskColor8 { background-color: rgb(250, 178, 90) !important; box-shadow: 1px 5px 5px 0px rgb(250, 178, 90);}
+.taskColor9 { background-color: rgb(123, 198, 212) !important; box-shadow: 1px 5px 5px 0px rgb(123, 198, 212);}
+.taskColor10 { background-color: rgb(173, 224, 255) !important; box-shadow: 1px 5px 5px 0px rgb(173, 224, 255);}
+.taskColor11 { background-color: rgb(250, 175, 170) !important; box-shadow: 1px 5px 5px 0px rgb(250, 175, 170);}
+
+
 .taskLitContainer{
     border: solid 1px red;
 }
