@@ -10,8 +10,8 @@ export const DashBoard = () => {
                     <h1>Dashboard</h1>
                 </div>
                 <div className={dashBoardStyle.btsContainer}>
-                    <div></div>
-                    <div></div>
+                    <div>bt1</div>
+                    <div>bt2</div>
                 </div>
             </div>
             <div className={dashBoardStyle.atalho2Container}>

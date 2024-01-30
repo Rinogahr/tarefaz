@@ -1,15 +1,16 @@
-
 .dashboard{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+
 }
 
 .shotsContainer{
-    padding: 1rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    padding: 1rem;
 }
 
 .shotsContainer h1{
@@ -28,23 +29,24 @@
     display: grid;
     justify-content: center;
     align-items: center;
-    grid-template-columns: 45% 45%;
-    grid-template-rows: 25% 25% 25%;
-    height: 100vh;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 12.5rem);
+    height: auto;
     grid-gap: 2%;
 }
-/* Extra small devices (phones, 600px and down) */
+
+/* Extra small devices (phones, 600px and down) celular*/
 @media only screen and (max-width: 600px) {
     .atalho2Container{
-        grid-template-columns: auto;
-        grid-template-rows: repeat(6, auto);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
       }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .atalho2Container{
-        /* grid-template-columns: 100%; */
+        /* background-color: rgb(140, 0, 255); */
       }
 }
 

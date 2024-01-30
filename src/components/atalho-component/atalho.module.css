@@ -13,6 +13,7 @@
 .paleTurquoise { background-color: rgb(173, 224, 255) !important; box-shadow: 1px 5px 5px 0px rgb(173, 224, 255);}
 .lightPink { background-color: rgb(250, 175, 170) !important; box-shadow: 1px 5px 5px 0px rgb(250, 175, 170);}
 
+/* BOTÃO ATALHO MODELO 1*/
 .atalhoContainer{
     width: 10rem;
     height: 2rem;
@@ -24,22 +25,25 @@
     align-items: center;
     justify-content: center;
 }
+
 .atalhoContainer h3{
     padding: 0;
     margin: 0;
     font-size: 12px;
 }
+/* BOTÃO ATALHO MODELO 1 FIM */
 
+/* BOTÃO ATALHO MODELO 2 */
 .atalhoContainerModelo2{
-    width: auto;
     display: flex;
-    align-items: center;
     justify-content: center;
     border-radius: 1rem;
-    padding: 5rem;
+    padding: 4rem;
+    margin: 1.5rem 1.5rem 0rem 0rem;    
 }
+/* BOTÃO ATALHO MODELO 2 FIM */
 
-/* Extra small devices (phones, 600px and down) */
+/* Extra small devices (phones, 600px and down)  CELL*/
 @media only screen and (max-width: 600px) {
     .atalhoContainer{
         width: auto;
@@ -47,36 +51,7 @@
     .atalhoContainer h3{
         font-size: 9px;
     }
-    .atalhoContainerModelo2{
+    /* .atalhoContainerModelo2{
         width: auto;
-    }
+    } */
 }
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-    .homeContainer{
-        /* background-color: rgb(255, 0, 0); */
-      }
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-    .homeContainer{
-        /* background-color: rgb(140, 0, 255); */
-      }
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-    .homeContainer{
-        /* background-color: rgb(255, 238, 0); */
-      }
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-    .homeContainer{
-        /* background-color: rgb(255, 145, 0); */
-      }
-}
-

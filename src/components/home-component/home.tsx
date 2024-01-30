@@ -6,53 +6,86 @@ import { Outlet } from "react-router-dom";
 import task from '../../../data/tarefasDiarias.json';
 
 export const Home = () =>{
-    const dados = task.tarefasDiarias[0].usuario;
+    let dado: any = [];
+    let totalMinhasTarefas: number = 0;
 
     function handleEditPerfil(){
         alert("editando o perfil")
     }
 
-   async function renderUsuarioLogado(params){
-        console.log(params);
-       // Objeto para armazenar usuários únicos
-        const usuariosUnicos = {};
-
-        // Filtrar usuários únicos e armazenar no objeto 'usuariosUnicos'
-        params.forEach(tarefa => {
-            const usuarioId = tarefa.usuario[0].id;
-            if (!usuariosUnicos[usuarioId]) {
-                usuariosUnicos[usuarioId] = tarefa.usuario[0];
-            }
+    interface UsuarioComTarefas {
+        id: number;
+        name: string;
+        dados: string;
+        photpth: string;
+        tarefas: {
+          titulo: string;
+          descricao: string;
+          dataInicio: string;
+          dataFim: string;
+          feito: boolean;
+        }[];
+      }
+      
+      async function renderUsuarioLogado(params: any[]): Promise<UsuarioComTarefas[]> {
+        // Criar um mapa para armazenar usuários únicos
+        const usuariosUnicos = new Map<number, UsuarioComTarefas>();
+      
+        // Iterar sobre as tarefas para organizar por usuário
+        params.forEach((tarefa) => {
+          const usuarioId = tarefa.usuario[0].id;
+      
+          // Verificar se o usuário já está no mapa
+          if (!usuariosUnicos.has(usuarioId)) {
+            // Se não estiver, adicionar o usuário ao mapa
+            usuariosUnicos.set(usuarioId, {
+              id: tarefa.usuario[0].id,
+              name: tarefa.usuario[0].name,
+              dados: tarefa.usuario[0].dados,
+              photpth: tarefa.usuario[0].photpth,
+              tarefas: [],
+            });
+          }
+      
+          // Adicionar a tarefa ao usuário correspondente no mapa
+         usuariosUnicos.get(usuarioId).tarefas.push({
+            titulo: tarefa.titulo,
+            descricao: tarefa.descricao,
+            dataInicio: tarefa.dataInicio,
+            dataFim: tarefa.dataFim,
+            feito: tarefa.feito,
+          });
         });
+      
+        // Converter o mapa de volta para um array
+        const usuariosUnicosArray = Array.from(usuariosUnicos.values());
 
-        // Mapear as tarefas originalmente fornecidas e associar cada tarefa ao usuário correspondente
-        const tarefasFiltradas = params.map(tarefa => {
-            const usuarioId = tarefa.usuario[0].id;
-            return {
-                usuario: [usuariosUnicos[usuarioId]],
-                titulo: tarefa.titulo,
-                descricao: tarefa.descricao,
-                dataInicio: tarefa.dataInicio,
-                dataFim: tarefa.dataFim,
-                feito: tarefa.feito,
-            };
+        dado = usuariosUnicosArray[0]
+        totalMinhasTarefas = usuariosUnicosArray[0].tarefas.length
+      
+        console.table({
+          "usuariosUnicosArray": usuariosUnicosArray,
+          "dados": dado,
+          "minhasTarefas": totalMinhasTarefas
         });
-
-        console.table(
-            {"tarefas":tarefasFiltradas, "unicoUsuario": usuariosUnicos});
-    }
-    
-    renderUsuarioLogado(task.tarefasDiarias);
+      
+        return usuariosUnicosArray;
+      }
+      
+      
+      renderUsuarioLogado(task.tarefasDiarias);
+      
 
     return(
         <div className={homeStyle.homeContainer}>
             <div className={homeStyle.homeChildren}>
                 <div className={homeStyle.dadosPerfil}>
                     <UserDados
-                        userImg={`${dados[0].photpth}`}
-                        name={`${dados[0].id} - ${dados[0].name}`}
-                        info="27 Ano - Brasília"
+                        userImg={`${dado.photpth}`}
+                        name={`${dado.id} - ${dado.name}`}
+                        info={`${dado.dados}`}
                         btEdite={ ()=> handleEditPerfil()}
+                        vlChildren={totalMinhasTarefas}
                     />
                 </div>
                 <div className={homeStyle.btAtalhos}>

@@ -8,7 +8,8 @@ type  userProps = {
         userImg: any,
         name: string,
         info: string,
-        btEdite: any
+        btEdite: any,
+        vlChildren?: string | number
     };
 
 export const UserDados = (props : userProps) => {
@@ -46,9 +47,9 @@ export const UserDados = (props : userProps) => {
                 </div>
             </div>
             <div className={userDadosStyle.btContainer}>
-                <Botao titulo='Minhas tarefas' valor={648} onClick={ () => verMinhasTarefas('Mark Zunkeberg')}/>
-                <Botao titulo='Tarefas concluidas' valor={100} onClick={ () => verTarefasConcluidas(1)}/>
-                <Botao titulo='Todas as tarefas' valor={648} onClick={ () => verTodasTarefas('all')}/>
+                <Botao titulo='Minhas tarefas' valor={props.vlChildren} onClick={ () => verMinhasTarefas(1)}/>
+                <Botao titulo='Tarefas concluidas' valor={props.vlChildren} onClick={ () => verTarefasConcluidas(1)}/>
+                <Botao titulo='Todas as tarefas' valor={props.vlChildren} onClick={ () => verTodasTarefas('all')}/>
             </div>
         </div>
     );
