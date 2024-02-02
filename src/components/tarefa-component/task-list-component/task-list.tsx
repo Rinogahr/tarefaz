@@ -2,7 +2,7 @@ import taskListStyle from './task-list.module.css';
 
 
 type  TaskItemProps = {
-    taskImg?:  string | null,
+    taskImg?:  any,
     taskUsuName:  string,
     taskTitle:    string,
     taskSubTitle?:  string | number,
@@ -17,7 +17,17 @@ export const TaskList = (task: TaskItemProps) => {
     const taskColorClass = task.taskColor ? taskListStyle[task.taskColor] : '';
     return(
         <div className={`${taskListStyle.taskLitContainer} ${taskColorClass}`}>
-            <div className={taskListStyle.childrenContainerUm}>1</div>
+            <div className={taskListStyle.childrenContainerUm}>
+                <div>
+                    <img src={task.taskImg} alt="photoPerfil" />
+                </div>
+                <div>
+
+                </div>
+                <div>
+                    
+                </div>
+            </div>
             <div className={taskListStyle.childrenContainerDois}>2</div>
         </div>
     );

@@ -16,4 +16,8 @@
 
 .taskLitContainer{
     border: solid 1px red;
+    background-color: #cecece;
+    width: 50rem;
+    height: 10rem;
+    border-radius: 1.5rem;
 }
