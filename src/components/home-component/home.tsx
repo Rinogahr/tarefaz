@@ -8,6 +8,7 @@ import task from '../../../data/tarefasDiarias.json';
 export const Home = () =>{
     let dado: any = [];
     let totalMinhasTarefas: number = 0;
+    let usuarioLogado: any = {};
 
     function handleEditPerfil(){
         alert("editando o perfil")
@@ -63,10 +64,22 @@ export const Home = () =>{
         dado = usuariosUnicosArray[0]
         totalMinhasTarefas = usuariosUnicosArray[0].tarefas.length
       
+        const usuario: any = {
+          "id": usuariosUnicosArray[0].id,
+          "name": usuariosUnicosArray[0].name,
+          "photpth": usuariosUnicosArray[0].photpth,
+          "dados": usuariosUnicosArray[0].dados,
+        }
+        
+        localStorage.setItem("usuario", JSON.stringify(usuario));
+        usuarioLogado = localStorage.getItem("usuario");
+        usuarioLogado = JSON.parse(usuarioLogado);
+
         console.table({
           "usuariosUnicosArray": usuariosUnicosArray,
           "dados": dado,
-          "minhasTarefas": totalMinhasTarefas
+          "minhasTarefas": totalMinhasTarefas,
+          "usuarioLogado": usuarioLogado
         });
       
         return usuariosUnicosArray;
@@ -81,9 +94,9 @@ export const Home = () =>{
             <div className={homeStyle.homeChildren}>
                 <div className={homeStyle.dadosPerfil}>
                     <UserDados
-                        userImg={`${dado.photpth}`}
-                        name={`${dado.id} - ${dado.name}`}
-                        info={`${dado.dados}`}
+                        userImg={`${usuarioLogado.photpth}`}
+                        name={`${usuarioLogado.id} - ${usuarioLogado.name}`}
+                        info={`${usuarioLogado.dados}`}
                         btEdite={ ()=> handleEditPerfil()}
                         vlChildren={totalMinhasTarefas}
                     />

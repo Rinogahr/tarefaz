@@ -17,7 +17,45 @@
 .taskLitContainer{
     border: solid 1px red;
     background-color: #cecece;
-    width: 50rem;
-    height: 10rem;
+    width: 40rem;
+    height: 5rem;
     border-radius: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.taskLitContainer div{
+    border: solid 1px;
+}
+
+.imgContainer{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center;
+    justify-content: center */
+}
+
+.imgContainer img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin: 1rem;
+}
+
+.titleContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.taskDadosContainer h1, h2, h3, h4, h5, h6{
+    padding: 0;
+    margin: 0;
+    color: #fafafa;
+}
+.infoTaskContainer{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
