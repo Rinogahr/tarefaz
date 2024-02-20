@@ -8,19 +8,24 @@ export const Tarefa = () =>{
     const params = useParams();
 
     const taskList = tarefasDiarias.tarefasDiarias;
-
-    function renderizarListaDeTarefas(params){
-        console.log(params);
-        console.log(taskList);
+    let  tasksFilter = [];
+    console.log('tasksFilter',tasksFilter);
+    function renderizarListaDeTarefas(params){        
+        taskList.forEach( (item) => {
+            if(item.usuario[0].id == params.id ){
+                tasksFilter.push(item);
+            }
+        });
+      
     }
 
     renderizarListaDeTarefas(params);
 
     return(
         <>
-            <Link to={"/"}>Tela de Home</Link>
-            <h1>Telas de Tarefas usuario de código {params.id}</h1>
-            <TaskList></TaskList>
+            {tasksFilter.length == 0 ? "<h2>Sem tarefas no momento</h2>" : tasksFilter.map( (item) => {
+                <TaskList taskUsuName="tetse" taskTitle="Teste"/>
+            })}
         </>
     )
 }
