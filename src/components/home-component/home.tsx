@@ -74,13 +74,6 @@ export const Home = () =>{
         localStorage.setItem("usuario", JSON.stringify(usuario));
         usuarioLogado = localStorage.getItem("usuario");
         usuarioLogado = JSON.parse(usuarioLogado);
-
-        console.table({
-          "usuariosUnicosArray": usuariosUnicosArray,
-          "dados": dado,
-          "minhasTarefas": totalMinhasTarefas,
-          "usuarioLogado": usuarioLogado
-        });
       
         return usuariosUnicosArray;
       }
