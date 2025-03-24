@@ -6,7 +6,7 @@
               "id": 1,
               "name": "Mark Zunkeberg",
               "dados": "America USA", 
-              "photpth": "src/assets/avatar/marki.jpg"
+              "photopth": "src/assets/avatar/marki.jpg"
             }
         ],
         "titulo": "Fazer exercícios matinais",
@@ -21,7 +21,7 @@
               "id": 1,
               "name": "Mark Zunkeberg",
               "dados": "America USA", 
-              "photpth": "src/assets/avatar/marki.jpg"
+              "photopth": "src/assets/avatar/marki.jpg"
             }
         ],
         "titulo": "Leitura diária",
@@ -36,7 +36,7 @@
                 "id": 2,
                 "name": "Velma Fliston",
                 "dados": "Cidade de Predegulho", 
-                "photpth": "src/assets/avatar/velma.jpg"
+                "photopth": "src/assets/avatar/velma.jpg"
             }
         ],
         "titulo": "Reunião de trabalho",
@@ -51,7 +51,7 @@
                 "id": 3,
                 "name": "Hermione Granger",
                 "dados": "Casa da Grifinória Hogowarts", 
-                "photpth": "src/assets/avatar/hermione.jpg"
+                "photopth": "src/assets/avatar/hermione.jpg"
             }
         ],
         "titulo": "Almoço",
@@ -66,7 +66,7 @@
                 "id": 3,
                 "name": "Hermione Granger",
                 "dados": "Casa da Grifinória Hogowarts", 
-                "photpth": "src/assets/avatar/hermione.jpg"
+                "photopth": "src/assets/avatar/hermione.jpg"
             }
         ],
         "titulo": "Bruxaria",
@@ -81,7 +81,7 @@
                 "id": 4,
                 "name": "Rufus o Lenhador",
                 "dados": "AnimeComics Corrida Malucolandia", 
-                "photpth": "src/assets/avatar/rufos.jpg"
+                "photopth": "src/assets/avatar/rufos.jpg"
             }
         ],
         "titulo": "Trabalho na tarde",
@@ -96,7 +96,7 @@
                 "id": 4,
                 "name": "Rufus o Lenhador",
                 "dados": "AnimeComics Corrida Malucolandia", 
-                "photpth": "src/assets/avatar/rufos.jpg"
+                "photopth": "src/assets/avatar/rufos.jpg"
             }
         ],
         "titulo": "Cortar Lenha",
@@ -111,7 +111,7 @@
                 "id": 4,
                 "name": "Rufus o Lenhador",
                 "dados": "AnimeComics Corrida Malucolandia", 
-                "photpth": "src/assets/avatar/rufos.jpg"
+                "photopth": "src/assets/avatar/rufos.jpg"
             }
         ],
         "titulo": "Alimentar o castor",

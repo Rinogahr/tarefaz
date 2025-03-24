@@ -47,9 +47,10 @@ export const UserDados = (props : userProps) => {
                 </div>
             </div>
             <div className={userDadosStyle.btContainer}>
-                <Botao titulo='Minhas tarefas' valor={props.vlChildren} onClick={ () => verMinhasTarefas(1)}/>
-                <Botao titulo='Tarefas concluidas' valor={props.vlChildren} onClick={ () => verTarefasConcluidas(1)}/>
-                <Botao titulo='Todas as tarefas' valor={props.vlChildren} onClick={ () => verTodasTarefas('all')}/>
+                <Botao titulo='Minhas tarefas' valor={props.vlChildren ?? ''} onClick={ () => verMinhasTarefas(1)}/>
+                <Botao titulo='Tarefas concluidas' valor={props.vlChildren ?? ''} onClick={ () => verTarefasConcluidas(1)}/>
+                <Botao titulo='Todas as tarefas' valor={props.vlChildren ?? ''} onClick={ () => verTodasTarefas('all')}/>
+                    
             </div>
         </div>
     );

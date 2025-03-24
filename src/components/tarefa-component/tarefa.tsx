@@ -7,34 +7,44 @@ import tarefasDiarias from '../../../data/tarefasDiarias.json';
 
 export const Tarefa = () =>{
     const params = useParams();
+    let color = "taskColor5";
     const taskList = tarefasDiarias.tarefasDiarias;
     const [tarefaFiltrada, setTarefaFiltrada] = useState<{ usuario: { id: number; name: string; dados: string; photpth: string; }[]; titulo: string; descricao: string; dataInicio: string; dataFim: string; feito: boolean; }[]>([]);
-    let color = "taskColor5";
-    // const [tarefaFiltrada, setTarefaFiltrada] = useState<{ usuario: any}[]>([]);
 
-    // Filtrar as tarefas e, em seguida, atualizar o estado
-    useEffect(() => {
-        const tarefasFiltradas = taskList.filter((item) => item.usuario[0].id == Number(params.id));
-        setTarefaFiltrada(tarefasFiltradas);
-    }, [params.id, taskList]); // Dependências do useEffect
-
-    // Use tarefaFiltrada conforme necessário em seu componente
-    console.log("tarefaFiltrada -> ",tarefaFiltrada);
-
-    return(
-        <>
-            {
-             tarefaFiltrada.length == 0 ? 
-             "Tarefa não encontrada" :  
-             tarefaFiltrada.map( (task) => {
-                return <TaskList key={task.titulo}
-                taskColor={color}
-                taskTitle={task.titulo}
-                taskSubTitle={task.descricao}
-                taskUsuName={task.usuario[0].name}
-                taskImg={task.usuario[0].photpth}/>
-             })
-            }
-        </>
-    )
 }
+
+
+// if(params.id === "all"){
+
+//     console.log(tarefasDiarias);
+// }else{
+    
+    
+    
+        
+//     // Filtrar as tarefas e, em seguida, atualizar o estado
+//     useEffect(() => {
+//         const tarefasFiltradas = taskList.filter((item) => item.usuario[0].id == Number(params.id));
+//         setTarefaFiltrada(tarefasFiltradas as any);
+//     }, [params.id, taskList]); // Dependências do useEffect
+
+//     // Use tarefaFiltrada conforme necessário em seu componente
+//     console.log("tarefaFiltrada -> ",tarefaFiltrada);
+// }
+
+// return(
+//     <>
+//         {
+//          tarefaFiltrada.length == 0 ? 
+//          "Tarefa não encontrada" :  
+//          tarefaFiltrada.map( (task) => {
+//             return <TaskList key={task.titulo}
+//             taskColor={color}
+//             taskTitle={task.titulo}
+//             taskSubTitle={task.descricao}
+//             taskUsuName={task.usuario[0].name}
+//             taskImg={task.usuario[0].photpth}/>
+//          })
+//         }
+//     </>
+// );

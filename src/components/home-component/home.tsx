@@ -18,7 +18,7 @@ export const Home = () =>{
         id: number;
         name: string;
         dados: string;
-        photpth: string;
+        photopth: string;
         tarefas: {
           titulo: string;
           descricao: string;
@@ -43,13 +43,13 @@ export const Home = () =>{
               id: tarefa.usuario[0].id,
               name: tarefa.usuario[0].name,
               dados: tarefa.usuario[0].dados,
-              photpth: tarefa.usuario[0].photpth,
+              photopth: tarefa.usuario[0].photopth,
               tarefas: [],
             });
           }
       
           // Adicionar a tarefa ao usuário correspondente no mapa
-         usuariosUnicos.get(usuarioId).tarefas.push({
+         usuariosUnicos.get(usuarioId)?.tarefas.push({
             titulo: tarefa.titulo,
             descricao: tarefa.descricao,
             dataInicio: tarefa.dataInicio,
@@ -67,7 +67,7 @@ export const Home = () =>{
         const usuario: any = {
           "id": usuariosUnicosArray[0].id,
           "name": usuariosUnicosArray[0].name,
-          "photpth": usuariosUnicosArray[0].photpth,
+          "photopth": usuariosUnicosArray[0].photopth,
           "dados": usuariosUnicosArray[0].dados,
         }
         
@@ -87,7 +87,7 @@ export const Home = () =>{
             <div className={homeStyle.homeChildren}>
                 <div className={homeStyle.dadosPerfil}>
                     <UserDados
-                        userImg={`${usuarioLogado.photpth}`}
+                        userImg={`${usuarioLogado.photopth}`}
                         name={`${usuarioLogado.id} - ${usuarioLogado.name}`}
                         info={`${usuarioLogado.dados}`}
                         btEdite={ ()=> handleEditPerfil()}
