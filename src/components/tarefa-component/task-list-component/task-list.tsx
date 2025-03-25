@@ -4,7 +4,7 @@ import more from '../../../assets/more.png';
 
 
 type  TaskItemProps = {
-    taskImg?:  any,
+    taskImg:  any,
     taskUsuName:  string,
     taskTitle:    string,
     taskSubTitle?:  string | number,
@@ -16,31 +16,31 @@ type  TaskItemProps = {
     taskChildren?: string | undefined,
 }
 
-export const TaskList = (task: TaskItemProps) => {
-    const taskColorClass = task.taskColor ? taskListStyle[task.taskColor] : '';
+export const TaskList = (props: TaskItemProps) => {
+    const taskColorClass = props.taskColor ? taskListStyle[props.taskColor] : '';
 
     return(
         <div className={`${taskListStyle.taskLitContainer} ${taskColorClass}`}>
             <div className={taskListStyle.imgContainer}>
-                <img src={task.taskImg} alt="photoPerfil" />
+                <img src={props.taskImg} alt="photoPerfil" />
             </div>
             <div className={taskListStyle.titleContainer}>
                 <div className={taskListStyle.taskDadosContainer}>
-                    <h3>Nome: {task.taskUsuName}</h3>
-                    <h4>Título: {task.taskTitle}</h4>
-                    <h5>SubTítulo: {task.taskSubTitle}</h5>
+                    <h3>Nome: {props.taskUsuName}</h3>
+                    <h4>Título: {props.taskTitle}</h4>
+                    <h5>SubTítulo: {props.taskSubTitle}</h5>
                 </div>
                 <div className={taskListStyle.infoTaskContainer}>
-                    <div>{task.taskTime}</div>
-                    <div>{task.taskDateCriacao instanceof Date ? task.taskDateCriacao.toLocaleDateString() : task.taskDateCriacao}</div>
-                    <div>{task.tskDateCoclusao instanceof Date ? task.tskDateCoclusao.toLocaleDateString() : task.tskDateCoclusao}</div>
+                    <div>{props.taskTime}</div>
+                    <div>{props.taskDateCriacao instanceof Date ? props.taskDateCriacao.toLocaleDateString() : props.taskDateCriacao}</div>
+                    <div>{props.tskDateCoclusao instanceof Date ? props.tskDateCoclusao.toLocaleDateString() : props.tskDateCoclusao}</div>
                 </div>
             </div>
             <div className={taskListStyle.taskBtContainer}>
                 <div>
                     <img src={more} alt='moreIcon'/>
                 </div>
-                <div>{task.taskChildren}</div>
+                <div>{props.taskChildren}</div>
             </div>
         </div>
     );
