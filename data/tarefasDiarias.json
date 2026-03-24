@@ -1,6 +1,7 @@
 {
     "tarefasDiarias": [
       {
+        "id": 1,
         "usuario": [
             {
               "id": 1,
@@ -16,6 +17,7 @@
         "feito": false
       },
       {
+        "id": 2,
         "usuario": [
             {
               "id": 1,
@@ -31,6 +33,7 @@
         "feito": false
       },
       {
+        "id": 3,
         "usuario": [
             {
                 "id": 2,
@@ -46,6 +49,7 @@
         "feito": true
       },
       {
+        "id": 4,
         "usuario": [
             {
                 "id": 3,
@@ -61,6 +65,7 @@
         "feito": false
       },
       {
+        "id": 5,
         "usuario": [
             {
                 "id": 3,
@@ -76,6 +81,7 @@
         "feito": false
       },
       {
+        "id": 6,
         "usuario": [
             {
                 "id": 4,
@@ -91,6 +97,7 @@
         "feito": false
       },
       {
+        "id": 7,
         "usuario": [
             {
                 "id": 4,
@@ -106,6 +113,7 @@
         "feito": false
       },
       {
+        "id": 8,
         "usuario": [
             {
                 "id": 4,

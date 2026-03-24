@@ -11,18 +11,21 @@
     "serve": "json-server --watch data/tarefazBd.json --port 5000",
     "server:bd": "json-server --watch data/tarefazBd.json --port 5000",
     "server:diarias": "json-server --watch data/tarefasDiarias.json --port 5001",
+    "server:users": "json-server --watch data/users.json --port 5002",
     "server:dv": "npm run dev",
-    "start:servers": "concurrently \"npm run server:bd\" \"npm run server:diarias\" \"npm run dev\""
+    "start:servers": "concurrently \"npm run server:bd\" \"npm run server:diarias\" \"npm run server:users\" \"npm run dev\""
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.6",
+    "dayjs": "^1.11.13",
     "json-server": "^1.0.0-alpha.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.21.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

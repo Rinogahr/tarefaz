@@ -1,0 +1,88 @@
+.loginContainer {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(95deg, rgb(212, 103, 245), rgb(174, 78, 242));
+}
+
+.loginCard {
+  width: min(90vw, 24rem);
+  background: #fafafa;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0px 7px 6px 0px rgb(143, 52, 173);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.loginCard h1 {
+  margin: 0 0 0.5rem 0;
+  color: rgb(174, 78, 242);
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgb(212, 103, 245);
+  border-radius: 0.6rem;
+}
+
+.inputGroup input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.loginButton {
+  border: none;
+  border-radius: 0.6rem;
+  background: rgb(174, 78, 242);
+  color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem;
+  cursor: pointer;
+}
+
+.linkGroup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inlineLink {
+  border: none;
+  background: transparent;
+  color: rgb(174, 78, 242);
+  cursor: pointer;
+  padding: 0;
+}
+
+.errorText {
+  margin: 0;
+  color: #d32f2f;
+  font-size: 12px;
+}
+
+.successText {
+  margin: 0;
+  color: #2e7d32;
+  font-size: 12px;
+}
+
+.logoutButton {
+  border: none;
+  background: transparent;
+  color: #44484aff;
+  text-decoration: underline;
+  cursor: pointer;
+}
