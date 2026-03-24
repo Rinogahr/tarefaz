@@ -7,7 +7,13 @@ import {
   registrarUsuario,
   salvarSessaoAutenticada,
 } from '../../services/auth-service';
+import { LoadingComponent } from '../loading-component/loading-component';
 import loginStyle from './login-screen.module.css';
+
+const aguardarTresSegundos = (): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 3000);
+  });
 
 export const LoginScreen = () => {
   const navigate = useNavigate();
@@ -16,6 +22,7 @@ export const LoginScreen = () => {
   const [modoCadastro, setModoCadastro] = useState<boolean>(false);
   const [mensagemErro, setMensagemErro] = useState<string>('');
   const [mensagemSucesso, setMensagemSucesso] = useState<string>('');
+  const [isLoadingLogin, setIsLoadingLogin] = useState<boolean>(false);
 
   const titulo = useMemo(() => (modoCadastro ? 'Criar conta' : 'Entrar'), [modoCadastro]);
   const textoBotao = useMemo(() => (modoCadastro ? 'Registrar' : 'Login'), [modoCadastro]);
@@ -56,14 +63,20 @@ export const LoginScreen = () => {
       }
     }
 
-    const autenticado = await autenticarUsuario({ login, senha });
-    if (!autenticado) {
-      setMensagemErro('Login ou senha inválidos.');
-      return;
-    }
+    try {
+      const autenticado = await autenticarUsuario({ login, senha });
+      if (!autenticado) {
+        setMensagemErro('Login ou senha inválidos.');
+        return;
+      }
 
-    salvarSessaoAutenticada({ login });
-    navigate('/home');
+      setIsLoadingLogin(true);
+      await aguardarTresSegundos();
+      salvarSessaoAutenticada({ login });
+      navigate('/home');
+    } finally {
+      setIsLoadingLogin(false);
+    }
   };
 
   const sairSessaoAnterior = (): void => {
@@ -71,6 +84,10 @@ export const LoginScreen = () => {
     setMensagemErro('');
     setMensagemSucesso('Sessão anterior encerrada.');
   };
+
+  if (isLoadingLogin) {
+    return <LoadingComponent texto="Validando credenciais e carregando ambiente..." />;
+  }
 
   return (
     <div className={loginStyle.loginContainer}>

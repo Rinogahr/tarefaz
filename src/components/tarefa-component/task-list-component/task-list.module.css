@@ -15,6 +15,11 @@
 
 
 .taskLitContainer {
+  --task-text-color: #ffffff;
+  --task-button-color: #ffffff;
+  --task-button-bg: rgba(255, 255, 255, 0.2);
+  --task-button-hover-bg: rgba(255, 255, 255, 0.4);
+  --task-avatar-border: rgba(255, 255, 255, 0.6);
   background-color: #cecece;
   width: 100%;
   max-width: 800px;
@@ -44,7 +49,7 @@
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  border: 3px solid var(--task-avatar-border);
   object-fit: cover;
 }
 
@@ -54,7 +59,7 @@
   flex-direction: column;
   justify-content: space-between;
   min-width: 250px;
-  color: #fff;
+  color: var(--task-text-color);
 }
 
 .taskHeader {
@@ -102,7 +107,7 @@
 }
 
 .btnAction {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--task-button-bg);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -112,11 +117,11 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #fff;
+  color: var(--task-button-color);
 }
 
 .btnAction:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--task-button-hover-bg);
   transform: scale(1.1);
 }
 
@@ -129,8 +134,60 @@
   background-color: #28a745;
 }
 
+.btnEdit:hover:not(:disabled) {
+  background-color: #4f4fbd;
+}
+
 .btnDelete:hover:not(:disabled) {
   background-color: #dc3545;
+}
+
+.contrasteClaro1 {
+  --task-text-color: #2a1b16;
+  --task-button-color: #201716;
+  --task-button-bg: rgba(33, 24, 24, 0.2);
+  --task-button-hover-bg: rgba(33, 24, 24, 0.35);
+  --task-avatar-border: rgba(43, 34, 34, 0.65);
+}
+
+.contrasteClaro2 {
+  --task-text-color: #1a2134;
+  --task-button-color: #171e2f;
+  --task-button-bg: rgba(23, 30, 47, 0.21);
+  --task-button-hover-bg: rgba(23, 30, 47, 0.37);
+  --task-avatar-border: rgba(23, 30, 47, 0.62);
+}
+
+.contrasteClaro3 {
+  --task-text-color: #163127;
+  --task-button-color: #123226;
+  --task-button-bg: rgba(16, 41, 31, 0.24);
+  --task-button-hover-bg: rgba(16, 41, 31, 0.38);
+  --task-avatar-border: rgba(16, 41, 31, 0.6);
+}
+
+.contrasteEscuro1 {
+  --task-text-color: #f5f7ff;
+  --task-button-color: #ffffff;
+  --task-button-bg: rgba(255, 255, 255, 0.2);
+  --task-button-hover-bg: rgba(255, 255, 255, 0.35);
+  --task-avatar-border: rgba(255, 255, 255, 0.75);
+}
+
+.contrasteEscuro2 {
+  --task-text-color: #fffef6;
+  --task-button-color: #fffef9;
+  --task-button-bg: rgba(255, 245, 218, 0.25);
+  --task-button-hover-bg: rgba(255, 245, 218, 0.4);
+  --task-avatar-border: rgba(255, 245, 218, 0.8);
+}
+
+.contrasteEscuro3 {
+  --task-text-color: #f2fffb;
+  --task-button-color: #f2fffb;
+  --task-button-bg: rgba(212, 255, 248, 0.23);
+  --task-button-hover-bg: rgba(212, 255, 248, 0.38);
+  --task-avatar-border: rgba(212, 255, 248, 0.78);
 }
 
 @media (max-width: 600px) {

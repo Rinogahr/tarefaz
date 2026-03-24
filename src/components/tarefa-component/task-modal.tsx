@@ -18,6 +18,8 @@ export const TaskModal = ({ onClose, onSuccess, usuarioLogado }: TaskModalProps)
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
 
+  const formatarDataPersistencia = ({ data }: { data: string }): string => dayjs(data).format('YYYY-MM-DDTHH:mm:ss');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -27,8 +29,8 @@ export const TaskModal = ({ onClose, onSuccess, usuarioLogado }: TaskModalProps)
       const payload: CriarTarefaInput = {
         titulo,
         descricao,
-        dataInicio: dayjs(dataInicio).toISOString(),
-        dataFim: dayjs(dataFim).toISOString(),
+        dataInicio: formatarDataPersistencia({ data: dataInicio }),
+        dataFim: formatarDataPersistencia({ data: dataFim }),
         feito: false,
         usuario: [usuarioLogado],
       };
@@ -36,7 +38,7 @@ export const TaskModal = ({ onClose, onSuccess, usuarioLogado }: TaskModalProps)
       await criarTarefa({ payload });
       onSuccess();
       onClose();
-    } catch (err) {
+    } catch {
       setErro('Erro ao criar tarefa. Verifique os campos.');
     } finally {
       setLoading(false);

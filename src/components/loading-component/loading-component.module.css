@@ -1,0 +1,45 @@
+.loadingContainer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(21, 9, 33, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+}
+
+.loadingCard {
+  width: min(86vw, 22rem);
+  border-radius: 1rem;
+  padding: 1.4rem;
+  background: #ffffff;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loadingCard p {
+  margin: 0;
+  color: #5f2c7d;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.spinner {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  border: 5px solid rgba(174, 78, 242, 0.2);
+  border-top-color: rgb(174, 78, 242);
+  animation: giro 0.9s linear infinite;
+}
+
+@keyframes giro {
+  to {
+    transform: rotate(360deg);
+  }
+}

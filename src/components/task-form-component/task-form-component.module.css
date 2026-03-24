@@ -1,0 +1,89 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(36, 12, 58, 0.62);
+  padding: 1rem;
+}
+
+.card {
+  width: min(95vw, 34rem);
+  background: #ffffff;
+  border-radius: 1.1rem;
+  padding: 1.4rem;
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  margin: 0 0 1rem 0;
+  text-align: center;
+  color: rgb(144, 55, 201);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.form label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #52246b;
+}
+
+.form input,
+.form textarea,
+.form select {
+  border: 1px solid #dab6ef;
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.form input:focus,
+.form textarea:focus,
+.form select:focus {
+  border-color: rgb(174, 78, 242);
+}
+
+.form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.7rem;
+  justify-content: flex-end;
+}
+
+.cancelButton,
+.saveButton {
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: #e8d8f3;
+  color: #572c75;
+}
+
+.saveButton {
+  background: rgb(174, 78, 242);
+  color: #ffffff;
+}
+
+.errorText {
+  margin: 0.2rem 0 0 0;
+  color: #cc2f2f;
+  font-size: 0.85rem;
+}

@@ -1,14 +1,16 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { TarefaModel } from '../../models/tarefa-model';
+import { TarefaModel, UsuarioModel } from '../../models/tarefa-model';
 import {
   buscarTarefas,
   buscarTarefasPorUsuario,
   excluirTarefa,
   marcarComoConcluida,
+  marcarComoPendente,
 } from '../../services/tarefas-service';
 import { TaskList, TaskColor } from './task-list-component/task-list';
-import dayjs from 'dayjs';
+import { LoadingComponent } from '../loading-component/loading-component';
+import { TaskFormComponent } from '../task-form-component/task-form-component';
 
 const cores: TaskColor[] = [
   'taskColor1',
@@ -26,14 +28,51 @@ const cores: TaskColor[] = [
 
 interface HomeContext {
   refreshHome: () => Promise<void>;
+  usuarioLogado?: UsuarioModel;
+  usuariosRegistrados?: UsuarioModel[];
+  isAdministrador?: boolean;
 }
+
+const aguardarTresSegundos = (): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 3000);
+  });
+
+const extrairNumeroParaCor = ({ id }: { id: number | string }): number => {
+  if (typeof id === 'number') {
+    return id;
+  }
+
+  const numeroConvertido = Number(id);
+  if (Number.isInteger(numeroConvertido)) {
+    return numeroConvertido;
+  }
+
+  return id.split('').reduce((acumulador, caractere) => acumulador + caractere.charCodeAt(0), 0);
+};
 
 export const Tarefa = () => {
   const params = useParams<{ id: string; status?: string }>();
-  const { refreshHome } = useOutletContext<HomeContext>();
+  const { refreshHome, usuarioLogado, usuariosRegistrados, isAdministrador } = useOutletContext<HomeContext>();
   const [tarefaFiltrada, setTarefaFiltrada] = useState<TarefaModel[]>([]);
   const [mensagemErro, setMensagemErro] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [isOpeningEditForm, setIsOpeningEditForm] = useState<boolean>(false);
+  const [tarefaEdicao, setTarefaEdicao] = useState<TarefaModel | null>(null);
+  const podeGerenciarTarefa = useCallback(
+    ({ tarefa }: { tarefa: TarefaModel }): boolean => {
+      if (isAdministrador) {
+        return true;
+      }
+
+      if (!usuarioLogado) {
+        return false;
+      }
+
+      return tarefa.usuario.some((usuario) => usuario.id === usuarioLogado.id);
+    },
+    [isAdministrador, usuarioLogado],
+  );
 
   const carregarTarefas = useCallback(async (): Promise<void> => {
     setLoading(true);
@@ -54,7 +93,6 @@ export const Tarefa = () => {
         tarefas = await buscarTarefasPorUsuario({ usuarioId });
       }
 
-      // Filtrar por status se fornecido
       if (statusParam === 'concluidas') {
         tarefas = tarefas.filter((t) => t.feito);
       } else if (statusParam === 'pendentes') {
@@ -74,21 +112,35 @@ export const Tarefa = () => {
     void carregarTarefas();
   }, [carregarTarefas]);
 
-  const handleMarcarComoConcluida = async (tarefa: TarefaModel): Promise<void> => {
+  const handleAlternarStatusTarefa = async (tarefa: TarefaModel): Promise<void> => {
+    if (!podeGerenciarTarefa({ tarefa })) {
+      alert('Você só pode alterar tarefas que pertencem ao seu usuário.');
+      return;
+    }
+
     try {
-      await marcarComoConcluida({ tarefa });
+      if (tarefa.feito) {
+        await marcarComoPendente({ tarefa });
+      } else {
+        await marcarComoConcluida({ tarefa });
+      }
       await carregarTarefas();
       await refreshHome();
     } catch {
-      alert('Erro ao marcar tarefa como concluída');
+      alert('Erro ao atualizar status da tarefa');
     }
   };
 
-  const handleExcluirTarefa = async (tarefaId: number): Promise<void> => {
+  const handleExcluirTarefa = async ({ tarefa }: { tarefa: TarefaModel }): Promise<void> => {
+    if (!podeGerenciarTarefa({ tarefa })) {
+      alert('Você só pode excluir tarefas que pertencem ao seu usuário.');
+      return;
+    }
+
     if (!confirm('Tem certeza que deseja excluir esta tarefa?')) return;
 
     try {
-      await excluirTarefa({ tarefaId });
+      await excluirTarefa({ tarefaId: tarefa.id });
       await carregarTarefas();
       await refreshHome();
     } catch {
@@ -96,12 +148,30 @@ export const Tarefa = () => {
     }
   };
 
-  const obterCorAleatoria = (id: number): TaskColor => {
-    return cores[id % cores.length];
+  const handleEditarTarefa = async (tarefa: TarefaModel): Promise<void> => {
+    if (!podeGerenciarTarefa({ tarefa })) {
+      alert('Você só pode editar tarefas que pertencem ao seu usuário.');
+      return;
+    }
+
+    if (tarefa.feito) {
+      alert('Tarefas concluídas não podem ser editadas.');
+      return;
+    }
+
+    setIsOpeningEditForm(true);
+    await aguardarTresSegundos();
+    setIsOpeningEditForm(false);
+    setTarefaEdicao(tarefa);
   };
 
-  if (loading) {
-    return <div>Carregando tarefas...</div>;
+  const obterCorAleatoria = (id: number | string): TaskColor => {
+    const numeroBase = extrairNumeroParaCor({ id });
+    return cores[Math.abs(numeroBase) % cores.length];
+  };
+
+  if (loading || isOpeningEditForm) {
+    return <LoadingComponent texto="Carregando tarefas..." />;
   }
 
   if (mensagemErro) {
@@ -116,8 +186,15 @@ export const Tarefa = () => {
         tarefaFiltrada.map((task) => (
           <TaskList
             key={task.id}
-            onComplete={() => handleMarcarComoConcluida(task)}
-            onDelete={() => handleExcluirTarefa(task.id)}
+            taskId={task.id}
+            canManageActions={podeGerenciarTarefa({ tarefa: task })}
+            onToggleStatus={() => handleAlternarStatusTarefa(task)}
+            onEdit={() => {
+              void handleEditarTarefa(task);
+            }}
+            onDelete={() => {
+              void handleExcluirTarefa({ tarefa: task });
+            }}
             taskColor={obterCorAleatoria(task.id)}
             taskDateConclusao={task.dataFim}
             taskDateCriacao={task.dataInicio}
@@ -128,6 +205,20 @@ export const Tarefa = () => {
             taskUsuName={task.usuario[0]?.name}
           />
         ))
+      )}
+      {tarefaEdicao && usuarioLogado && (
+        <TaskFormComponent
+          modo="editar"
+          tarefa={tarefaEdicao}
+          onCancel={() => setTarefaEdicao(null)}
+          onSuccess={async () => {
+            await carregarTarefas();
+            await refreshHome();
+          }}
+          usuarioLogado={usuarioLogado}
+          usuariosRegistrados={usuariosRegistrados ?? []}
+          isAdministrador={Boolean(isAdministrador)}
+        />
       )}
     </div>
   );

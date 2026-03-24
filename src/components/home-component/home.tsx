@@ -5,7 +5,8 @@ import { UserDados } from '../user-dados-component/user-dados';
 import { UsuarioModel } from '../../models/tarefa-model';
 import { buscarTarefas } from '../../services/tarefas-service';
 import homeStyle from './home.module.css';
-import { TaskModal } from '../tarefa-component/task-modal';
+import { TaskFormComponent } from '../task-form-component/task-form-component';
+import { LoadingComponent } from '../loading-component/loading-component';
 
 interface UsuarioResumo {
   usuario: UsuarioModel;
@@ -17,24 +18,32 @@ interface UsuarioResumo {
 const buscarPrimeiroUsuario = ({ usuarios }: { usuarios: UsuarioResumo[] }): UsuarioResumo | null =>
   usuarios.length > 0 ? usuarios[0] : null;
 
+const aguardarTresSegundos = (): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 3000);
+  });
+
 export const Home = () => {
   const navigate = useNavigate();
   const [usuarioResumo, setUsuarioResumo] = useState<UsuarioResumo | null>(null);
   const [totalGeral, setTotalGeral] = useState(0);
   const [mensagemErro, setMensagemErro] = useState<string>('');
-  const [showModal, setShowModal] = useState(false);
+  const [showTaskForm, setShowTaskForm] = useState<boolean>(false);
+  const [isLoadingTela, setIsLoadingTela] = useState<boolean>(true);
+  const [isLoadingAberturaForm, setIsLoadingAberturaForm] = useState<boolean>(false);
+  const [usuariosRegistrados, setUsuariosRegistrados] = useState<UsuarioModel[]>([]);
 
   const handleEditPerfil = (): void => {
     alert('editando o perfil');
   };
 
   const carregarDados = useCallback(async (): Promise<void> => {
+    setIsLoadingTela(true);
     try {
       const loginLogado = localStorage.getItem('auth-user');
       const tarefas = await buscarTarefas();
       setTotalGeral(tarefas.length);
-      
-      // Mapeia todos os usuários encontrados nas tarefas
+
       const usuariosMap = tarefas.reduce<Map<number, UsuarioResumo>>((mapa, tarefa) => {
         tarefa.usuario.forEach((usuario) => {
           const usuarioExistente = mapa.get(usuario.id);
@@ -58,16 +67,15 @@ export const Home = () => {
 
         return mapa;
       }, new Map<number, UsuarioResumo>());
+      setUsuariosRegistrados(Array.from(usuariosMap.values()).map((usuarioResumoMap) => usuarioResumoMap.usuario));
 
-      // Tenta encontrar o usuário pelo login (assumindo que id 1 é admin)
       const idUsuarioLogado = loginLogado === 'admin' ? 1 : null;
-      
+
       let usuarioParaExibir: UsuarioResumo | null = null;
       if (idUsuarioLogado) {
         usuarioParaExibir = usuariosMap.get(idUsuarioLogado) ?? null;
       }
 
-      // Fallback para o primeiro usuário se não encontrar o logado
       if (!usuarioParaExibir) {
         usuarioParaExibir = buscarPrimeiroUsuario({ usuarios: Array.from(usuariosMap.values()) });
       }
@@ -82,6 +90,8 @@ export const Home = () => {
       setMensagemErro('');
     } catch {
       setMensagemErro('Erro ao carregar os dados do usuário');
+    } finally {
+      setIsLoadingTela(false);
     }
   }, []);
 
@@ -96,6 +106,19 @@ export const Home = () => {
 
     return `${usuarioResumo.usuario.id} - ${usuarioResumo.usuario.name}`;
   }, [usuarioResumo]);
+
+  const isAdministrador = useMemo<boolean>(() => localStorage.getItem('auth-user') === 'admin', []);
+
+  const abrirFormularioCriacao = async (): Promise<void> => {
+    setIsLoadingAberturaForm(true);
+    await aguardarTresSegundos();
+    setIsLoadingAberturaForm(false);
+    setShowTaskForm(true);
+  };
+
+  if (isLoadingTela || isLoadingAberturaForm) {
+    return <LoadingComponent texto="Carregando dados e preparando sua navegação..." />;
+  }
 
   if (mensagemErro) {
     return <div>{mensagemErro}</div>;
@@ -122,38 +145,50 @@ export const Home = () => {
             titulo="Nova tarefa"
             bgColor="lightSalmon"
             bgTxtColor="textColorDark"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              void abrirFormularioCriacao();
+            }}
           />
           <Atalho
             model="modeloUm"
             titulo="Concluidas"
             bgColor="mediumPurple"
             bgTxtColor="textColorDark"
-            onClick={() => navigate(`/task/${usuarioResumo?.usuario.id}`)}
+            onClick={() => navigate(`/home/task/${usuarioResumo?.usuario.id}/concluidas`)}
           />
           <Atalho
             model="modeloUm"
             titulo="Em andamento"
             bgColor="paleVioletRed"
             bgTxtColor="textColorDark"
-            onClick={() => navigate(`/task/${usuarioResumo?.usuario.id}`)}
+            onClick={() => navigate(`/home/task/${usuarioResumo?.usuario.id}/pendentes`)}
           />
           <Atalho
             model="modeloUm"
             titulo="Atrasadas"
             bgColor="cornflowerBlue"
             bgTxtColor="textColorDark"
-            onClick={() => navigate(`/task/${usuarioResumo?.usuario.id}`)}
+            onClick={() => navigate(`/home/task/${usuarioResumo?.usuario.id}`)}
           />
         </div>
-        <Outlet context={{ refreshHome: carregarDados }} />
+        <Outlet
+          context={{
+            refreshHome: carregarDados,
+            usuarioLogado: usuarioResumo?.usuario,
+            usuariosRegistrados,
+            isAdministrador,
+          }}
+        />
       </div>
 
-      {showModal && usuarioResumo && (
-        <TaskModal
-          onClose={() => setShowModal(false)}
+      {showTaskForm && usuarioResumo && (
+        <TaskFormComponent
+          modo="criar"
+          onCancel={() => setShowTaskForm(false)}
           onSuccess={carregarDados}
           usuarioLogado={usuarioResumo.usuario}
+          usuariosRegistrados={usuariosRegistrados}
+          isAdministrador={isAdministrador}
         />
       )}
     </div>

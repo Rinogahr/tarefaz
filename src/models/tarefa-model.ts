@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
+const formatarDataPadrao = ({ dataIso }: { dataIso: string }): string => dayjs(dataIso).format('YYYY-MM-DDTHH:mm:ss');
+
+const dataIsoSchema = z
+  .union([z.iso.datetime({ local: true }), z.iso.datetime()])
+  .transform((valor) => formatarDataPadrao({ dataIso: valor }));
+
 const usuarioSchema = z.object({
   id: z.number().int().positive(),
   name: z.string().min(1),
@@ -10,12 +16,12 @@ const usuarioSchema = z.object({
 
 const tarefaSchema = z
   .object({
-    id: z.number().int().positive(),
+    id: z.union([z.number().int().positive(), z.string().min(1)]),
     usuario: z.array(usuarioSchema).min(1),
     titulo: z.string().min(1),
     descricao: z.string().min(1),
-    dataInicio: z.iso.datetime({ local: true }),
-    dataFim: z.iso.datetime({ local: true }),
+    dataInicio: dataIsoSchema,
+    dataFim: dataIsoSchema,
     feito: z.boolean(),
   })
   .refine(
@@ -37,7 +43,7 @@ export interface UsuarioModel {
 }
 
 export interface TarefaModel {
-  id: number;
+  id: number | string;
   usuario: UsuarioModel[];
   titulo: string;
   descricao: string;
