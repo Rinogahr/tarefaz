@@ -12,8 +12,9 @@
     "server:bd": "json-server --watch data/tarefazBd.json --port 5000",
     "server:diarias": "json-server --watch data/tarefasDiarias.json --port 5001",
     "server:users": "json-server --watch data/users.json --port 5002",
+    "server:usuario-list": "json-server --watch data/usuario-list.json --port 5003",
     "server:dv": "npm run dev",
-    "start:servers": "concurrently \"npm run server:bd\" \"npm run server:diarias\" \"npm run server:users\" \"npm run dev\""
+    "start:servers": "concurrently \"npm run server:bd\" \"npm run server:diarias\" \"npm run server:users\" \"npm run server:usuario-list\" \"npm run dev\""
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

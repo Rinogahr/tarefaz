@@ -77,6 +77,18 @@ export const TaskFormComponent = ({
       return;
     }
 
+    const dataInicioValida = dayjs(dataInicio).isValid();
+    const dataFimValida = dayjs(dataFim).isValid();
+    if (!dataInicioValida || (isAdministrador && !dataFimValida)) {
+      setMensagemErro('Preencha datas válidas para salvar a tarefa.');
+      return;
+    }
+
+    if (isAdministrador && dayjs(dataFim).isBefore(dayjs(dataInicio))) {
+      setMensagemErro('A data de vencimento não pode ser anterior à data de criação.');
+      return;
+    }
+
     if (isAdministrador && dayjs(dataFim).isBefore(dayjs())) {
       setMensagemErro('A data de vencimento não pode ser anterior à data atual.');
       return;

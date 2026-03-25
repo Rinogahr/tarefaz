@@ -7,6 +7,8 @@ import { buscarTarefas } from '../../services/tarefas-service';
 import homeStyle from './home.module.css';
 import { TaskFormComponent } from '../task-form-component/task-form-component';
 import { LoadingComponent } from '../loading-component/loading-component';
+import { buscarPerfilPorLogin, buscarPerfisUsuarios } from '../../services/usuario-service';
+import { limparSessaoAutenticada } from '../../services/auth-service';
 
 interface UsuarioResumo {
   usuario: UsuarioModel;
@@ -32,15 +34,27 @@ export const Home = () => {
   const [isLoadingTela, setIsLoadingTela] = useState<boolean>(true);
   const [isLoadingAberturaForm, setIsLoadingAberturaForm] = useState<boolean>(false);
   const [usuariosRegistrados, setUsuariosRegistrados] = useState<UsuarioModel[]>([]);
+  const [usuarioLogadoId, setUsuarioLogadoId] = useState<number | null>(null);
 
   const handleEditPerfil = (): void => {
-    alert('editando o perfil');
+    const idDestino = usuarioLogadoId ?? usuarioResumo?.usuario.id;
+    if (!idDestino) {
+      setMensagemErro('Não foi possível identificar o usuário logado para edição.');
+      return;
+    }
+
+    navigate(`/home/edit-user/${idDestino}`);
   };
 
   const carregarDados = useCallback(async (): Promise<void> => {
     setIsLoadingTela(true);
     try {
       const loginLogado = localStorage.getItem('auth-user');
+      const perfilUsuarioLogado = loginLogado ? await buscarPerfilPorLogin({ login: loginLogado }) : null;
+      const perfisUsuarios = await buscarPerfisUsuarios();
+      const perfilPorId = new Map(perfisUsuarios.map((perfil) => [perfil.id, perfil]));
+      const idUsuarioLogado = perfilUsuarioLogado?.id ?? null;
+      setUsuarioLogadoId(idUsuarioLogado);
       const tarefas = await buscarTarefas();
       setTotalGeral(tarefas.length);
 
@@ -67,17 +81,69 @@ export const Home = () => {
 
         return mapa;
       }, new Map<number, UsuarioResumo>());
-      setUsuariosRegistrados(Array.from(usuariosMap.values()).map((usuarioResumoMap) => usuarioResumoMap.usuario));
+      const usuariosRegistradosComPerfil = Array.from(usuariosMap.values()).map((usuarioResumoMap) => {
+        const perfil = perfilPorId.get(usuarioResumoMap.usuario.id);
+        if (!perfil) {
+          return usuarioResumoMap.usuario;
+        }
 
-      const idUsuarioLogado = loginLogado === 'admin' ? 1 : null;
+        return {
+          ...usuarioResumoMap.usuario,
+          name: `${perfil.nome} ${perfil.sobrenome}`,
+          dados: perfil.email,
+          photpth: perfil.imgPerfilPath ?? perfil.imgPerfil,
+        };
+      });
+      setUsuariosRegistrados(usuariosRegistradosComPerfil);
 
       let usuarioParaExibir: UsuarioResumo | null = null;
-      if (idUsuarioLogado) {
-        usuarioParaExibir = usuariosMap.get(idUsuarioLogado) ?? null;
+      if (idUsuarioLogado && perfilUsuarioLogado) {
+        const resumoBase = usuariosMap.get(idUsuarioLogado);
+        if (resumoBase) {
+          usuarioParaExibir = {
+            ...resumoBase,
+            usuario: {
+              ...resumoBase.usuario,
+              name: `${perfilUsuarioLogado.nome} ${perfilUsuarioLogado.sobrenome}`,
+              dados: perfilUsuarioLogado.email,
+              photpth: perfilUsuarioLogado.imgPerfilPath ?? perfilUsuarioLogado.imgPerfil,
+            },
+          };
+        }
+      }
+
+      if (!usuarioParaExibir && perfilUsuarioLogado) {
+        usuarioParaExibir = {
+          usuario: {
+            id: perfilUsuarioLogado.id,
+            name: `${perfilUsuarioLogado.nome} ${perfilUsuarioLogado.sobrenome}`,
+            dados: perfilUsuarioLogado.email,
+            photpth: perfilUsuarioLogado.imgPerfilPath ?? perfilUsuarioLogado.imgPerfil,
+          },
+          totalTarefas: 0,
+          tarefasConcluidas: 0,
+          tarefasPendentes: 0,
+        };
       }
 
       if (!usuarioParaExibir) {
-        usuarioParaExibir = buscarPrimeiroUsuario({ usuarios: Array.from(usuariosMap.values()) });
+        const primeiroResumo = buscarPrimeiroUsuario({ usuarios: Array.from(usuariosMap.values()) });
+        if (primeiroResumo) {
+          const perfilPrimeiro = perfilPorId.get(primeiroResumo.usuario.id);
+          if (perfilPrimeiro) {
+            usuarioParaExibir = {
+              ...primeiroResumo,
+              usuario: {
+                ...primeiroResumo.usuario,
+                name: `${perfilPrimeiro.nome} ${perfilPrimeiro.sobrenome}`,
+                dados: perfilPrimeiro.email,
+                photpth: perfilPrimeiro.imgPerfilPath ?? perfilPrimeiro.imgPerfil,
+              },
+            };
+          } else {
+            usuarioParaExibir = primeiroResumo;
+          }
+        }
       }
 
       if (!usuarioParaExibir) {
@@ -116,6 +182,11 @@ export const Home = () => {
     setShowTaskForm(true);
   };
 
+  const handleLogout = (): void => {
+    limparSessaoAutenticada();
+    navigate('/login');
+  };
+
   if (isLoadingTela || isLoadingAberturaForm) {
     return <LoadingComponent texto="Carregando dados e preparando sua navegação..." />;
   }
@@ -127,6 +198,11 @@ export const Home = () => {
   return (
     <div className={homeStyle.homeContainer}>
       <div className={homeStyle.homeChildren}>
+        <div className={homeStyle.headerActions}>
+          <button className={homeStyle.logoutButton} type="button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
         <div className={homeStyle.dadosPerfil}>
           <UserDados
             userId={usuarioResumo?.usuario.id}
@@ -170,6 +246,15 @@ export const Home = () => {
             bgTxtColor="textColorDark"
             onClick={() => navigate(`/home/task/${usuarioResumo?.usuario.id}`)}
           />
+          {isAdministrador && (
+            <Atalho
+              model="modeloUm"
+              titulo="Novo usuário"
+              bgColor="aquamarine"
+              bgTxtColor="textColorDark"
+              onClick={() => navigate('/home/create-user')}
+            />
+          )}
         </div>
         <Outlet
           context={{

@@ -11,6 +11,7 @@ import {
 import { TaskList, TaskColor } from './task-list-component/task-list';
 import { LoadingComponent } from '../loading-component/loading-component';
 import { TaskFormComponent } from '../task-form-component/task-form-component';
+import { buscarPerfisUsuarios } from '../../services/usuario-service';
 
 const cores: TaskColor[] = [
   'taskColor1',
@@ -99,7 +100,26 @@ export const Tarefa = () => {
         tarefas = tarefas.filter((t) => !t.feito);
       }
 
-      setTarefaFiltrada(tarefas);
+      const perfisUsuarios = await buscarPerfisUsuarios();
+      const perfilPorId = new Map(perfisUsuarios.map((perfil) => [perfil.id, perfil]));
+      const tarefasComPerfilAtualizado = tarefas.map((tarefaAtual) => ({
+        ...tarefaAtual,
+        usuario: tarefaAtual.usuario.map((usuarioTarefa) => {
+          const perfil = perfilPorId.get(usuarioTarefa.id);
+          if (!perfil) {
+            return usuarioTarefa;
+          }
+
+          return {
+            ...usuarioTarefa,
+            name: `${perfil.nome} ${perfil.sobrenome}`,
+            dados: perfil.email,
+            photpth: perfil.imgPerfilPath ?? perfil.imgPerfil,
+          };
+        }),
+      }));
+
+      setTarefaFiltrada(tarefasComPerfilAtualizado);
       setMensagemErro('');
     } catch {
       setMensagemErro('Erro ao carregar tarefas');

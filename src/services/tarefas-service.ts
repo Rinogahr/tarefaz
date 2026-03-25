@@ -93,16 +93,40 @@ export const atualizarTarefa = async ({
   tarefaId: number | string;
   payload: Partial<CriarTarefaInput>;
 }): Promise<TarefaModel> => {
-  const response = await fetch(montarUrl({ path: `${tarefasResourcePath}/${tarefaId}` }), {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+  const caminhoRecurso = `${tarefasResourcePath}/${String(tarefaId)}`;
 
-  const responsePayload = await validarResposta({ response });
-  return validarTarefa(responsePayload);
+  try {
+    const responsePatch = await fetch(montarUrl({ path: caminhoRecurso }), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const payloadPatch = await validarResposta({ response: responsePatch });
+    return validarTarefa(payloadPatch);
+  } catch {
+    const responseTarefaAtual = await fetch(montarUrl({ path: caminhoRecurso }), {
+      method: 'GET',
+    });
+    const payloadTarefaAtual = await validarResposta({ response: responseTarefaAtual });
+    const payloadFinal = {
+      ...(payloadTarefaAtual as Record<string, unknown>),
+      ...payload,
+    };
+
+    const responsePut = await fetch(montarUrl({ path: caminhoRecurso }), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payloadFinal),
+    });
+
+    const payloadPut = await validarResposta({ response: responsePut });
+    return validarTarefa(payloadPut);
+  }
 };
 
 export const marcarComoConcluida = async ({

@@ -18,6 +18,19 @@ interface UserProps {
 export const UserDados = (props: UserProps) => {
   const history = useNavigate();
 
+  const normalizarCaminhoImagem = ({ caminhoImagem }: { caminhoImagem: string }): string => {
+    const caminhoNormalizado = caminhoImagem.replace(/\\/g, '/');
+    if (
+      caminhoNormalizado.startsWith('data:image') ||
+      caminhoNormalizado.startsWith('http://') ||
+      caminhoNormalizado.startsWith('https://')
+    ) {
+      return caminhoNormalizado;
+    }
+
+    return caminhoNormalizado.startsWith('/') ? caminhoNormalizado : `/${caminhoNormalizado}`;
+  };
+
   const verMinhasTarefas = ({ userId }: { userId?: number }): void => {
     if (!userId) {
       return;
@@ -42,7 +55,7 @@ export const UserDados = (props: UserProps) => {
     history('/home');
   };
 
-  const imageSrc = props.userImg?.startsWith('http') || props.userImg?.startsWith('/') ? props.userImg : `/${props.userImg}`;
+  const imageSrc = normalizarCaminhoImagem({ caminhoImagem: props.userImg || 'src/assets/avatar/vista-da-mulher-3d.jpg' });
 
   return (
     <div className={userDadosStyle.userDadoscontainer}>

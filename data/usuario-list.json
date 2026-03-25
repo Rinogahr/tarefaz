@@ -1,0 +1,27 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "login": "admin",
+      "nome": "Administrador",
+      "sobrenome": "Sistema",
+      "dataNascimento": "1990-01-01",
+      "telefone": "(11) 99999-0000",
+      "email": "admin@tarefaz.com",
+      "tipoUsuario": "admin",
+      "imgPerfil": "src/assets/avatar/administrador_1.png",
+      "imgPerfilPath": "src/assets/avatar/administrador_1.png"
+    },
+    {
+      "id": "2",
+      "login": "zaminha",
+      "nome": "Elisama",
+      "sobrenome": "Tavares",
+      "dataNascimento": "1990-08-08",
+      "telefone": "81998600486",
+      "email": "zaminha@email.com",
+      "tipoUsuario": "regular",
+      "imgPerfil": "src/assets/avatar/vista-da-mulher-3d.jpg"
+    }
+  ]
+}

@@ -66,6 +66,19 @@ export const TaskList = ({
   onEdit,
   onDelete,
 }: TaskItemProps) => {
+  const normalizarCaminhoImagem = ({ caminhoImagem }: { caminhoImagem: string }): string => {
+    const caminhoNormalizado = caminhoImagem.replace(/\\/g, '/');
+    if (
+      caminhoNormalizado.startsWith('data:image') ||
+      caminhoNormalizado.startsWith('http://') ||
+      caminhoNormalizado.startsWith('https://')
+    ) {
+      return caminhoNormalizado;
+    }
+
+    return caminhoNormalizado.startsWith('/') ? caminhoNormalizado : `/${caminhoNormalizado}`;
+  };
+
   const taskColorClass = taskListStyle[taskColor];
   const contrasteClass = taskListStyle[obterClasseContraste({ taskColor, taskId })];
   const dataCriacaoFormatada = dayjs(taskDateCriacao).format('DD/MM/YYYY HH:mm');
@@ -73,7 +86,7 @@ export const TaskList = ({
     ? dayjs(taskDateConclusao).format('DD/MM/YYYY HH:mm')
     : 'Tarefa não concluída';
 
-  const imageSrc = taskImg?.startsWith('http') || taskImg?.startsWith('/') ? taskImg : `/${taskImg}`;
+  const imageSrc = normalizarCaminhoImagem({ caminhoImagem: taskImg || 'src/assets/avatar/vista-da-mulher-3d.jpg' });
 
   return (
     <div className={`${taskListStyle.taskLitContainer} ${taskColorClass} ${contrasteClass}`}>

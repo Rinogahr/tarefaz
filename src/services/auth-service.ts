@@ -6,7 +6,7 @@ const usersResourcePath = '/users';
 const authStorageKey = 'auth-user';
 
 const usuarioAutenticacaoSchema = z.object({
-  id: z.number().int().positive(),
+  id: z.coerce.number().int().positive(),
   login: z.string().min(1),
   senha: z.string().min(1),
 });
@@ -19,6 +19,12 @@ interface UsersDataModel {
 
 export interface UsuarioAutenticacaoModel {
   id: number;
+  login: string;
+  senha: string;
+}
+
+interface RegistrarUsuarioInput {
+  id?: number;
   login: string;
   senha: string;
 }
@@ -50,12 +56,10 @@ export const buscarUsuarios = async (): Promise<UsuarioAutenticacaoModel[]> => {
 };
 
 export const registrarUsuario = async ({
+  id,
   login,
   senha,
-}: {
-  login: string;
-  senha: string;
-}): Promise<UsuarioAutenticacaoModel> => {
+}: RegistrarUsuarioInput): Promise<UsuarioAutenticacaoModel> => {
   const usuarios = await buscarUsuarios();
   const usuarioExistente = usuarios.find((usuario) => usuario.login === login);
   if (usuarioExistente) {
@@ -63,14 +67,14 @@ export const registrarUsuario = async ({
   }
 
   const proximoId = usuarios.reduce<number>((maiorId, usuario) => Math.max(maiorId, usuario.id), 0) + 1;
-  const payload = { id: proximoId, login, senha };
+  const payloadComId = { id: id ?? proximoId, login, senha };
 
   const response = await fetch(montarUrl({ path: usersResourcePath }), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payloadComId),
   });
 
   if (!response.ok) {
@@ -90,6 +94,38 @@ export const autenticarUsuario = async ({
 }): Promise<boolean> => {
   const usuarios = await buscarUsuarios();
   return usuarios.some((usuario) => usuario.login === login && usuario.senha === senha);
+};
+
+export const buscarUsuarioPorLogin = async ({
+  login,
+}: {
+  login: string;
+}): Promise<UsuarioAutenticacaoModel | null> => {
+  const usuarios = await buscarUsuarios();
+  return usuarios.find((usuario) => usuario.login === login) ?? null;
+};
+
+export const atualizarSenhaUsuario = async ({
+  usuarioId,
+  senha,
+}: {
+  usuarioId: number;
+  senha: string;
+}): Promise<UsuarioAutenticacaoModel> => {
+  const response = await fetch(montarUrl({ path: `${usersResourcePath}/${usuarioId}` }), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ senha }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Não foi possível atualizar a senha');
+  }
+
+  const payload = await response.json();
+  return usuarioAutenticacaoSchema.parse(payload);
 };
 
 export const salvarSessaoAutenticada = ({ login }: { login: string }): void => {
