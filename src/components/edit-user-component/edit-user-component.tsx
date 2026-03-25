@@ -108,8 +108,13 @@ export const EditUserComponent = () => {
         }
 
         const perfilSessao = await buscarPerfilPorLogin({ login: loginSessao });
-        if (!isAdministrador || perfilSessao?.tipoUsuario !== 'admin') {
-          throw new Error('Apenas administradores podem editar usuários.');
+        if (!perfilSessao) {
+          throw new Error('Sessão de usuário inválida.');
+        }
+
+        const podeEditar = isAdministrador || perfilSessao.id === usuarioId;
+        if (!podeEditar) {
+          throw new Error('Você não tem permissão para editar este usuário.');
         }
 
         const perfil = await buscarPerfilPorId({ usuarioId });
@@ -128,7 +133,8 @@ export const EditUserComponent = () => {
           senha: '',
           confirmarSenha: '',
           imgPerfil: perfil.imgPerfil,
-          imgPerfilPath: `src/assets/avatar/${montarSlugPrimeiroNome({ nome: perfil.nome })}_${perfil.id}.png`,
+          imgPerfilPath:
+            perfil.imgPerfilPath ?? `src/assets/avatar/${montarSlugPrimeiroNome({ nome: perfil.nome })}_${perfil.id}.png`,
         });
       } catch (error) {
         const mensagem = error instanceof Error ? error.message : 'Falha ao carregar usuário.';
