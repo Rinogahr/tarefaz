@@ -16,8 +16,8 @@
 }
 .profileEdit{
     display: flex;
-    flex-direction: column;
-    justify-content: end;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: end;
 }
 

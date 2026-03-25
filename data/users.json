@@ -9,6 +9,11 @@
       "id": "2",
       "login": "zaminha",
       "senha": "minha123"
+    },
+    {
+      "id": 3,
+      "login": "batataF",
+      "senha": "batata123"
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material';
 import userDadosStyle from './user-dados.module.css';
-import { BiEdit } from 'react-icons/bi';
+import { BiEdit, BiLogOut } from 'react-icons/bi';
 import { Botao } from '../bt-component/botao';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,8 @@ interface UserProps {
   userImg: string;
   name: string;
   info: string;
-  btEdite: () => void;
+  btEdite?: () => void;
+  btLogout?: () => void;
   vlPendentes: number;
   vlConcluidas: number;
   vlTotal: number;
@@ -55,7 +56,7 @@ export const UserDados = (props: UserProps) => {
     history('/home');
   };
 
-  const imageSrc = normalizarCaminhoImagem({ caminhoImagem: props.userImg || 'src/assets/avatar/vista-da-mulher-3d.jpg' });
+  const imageSrc = normalizarCaminhoImagem({ caminhoImagem: props.userImg || 'src/assets/noPhoto.jpg' });
 
   return (
     <div className={userDadosStyle.userDadoscontainer}>
@@ -63,6 +64,9 @@ export const UserDados = (props: UserProps) => {
         <div className={userDadosStyle.profileEdit}>
           <IconButton aria-label="Perfil" onClick={props.btEdite}>
             <BiEdit color="#fafafa" />
+          </IconButton>
+          <IconButton aria-label="Perfil" onClick={props.btLogout}>
+            <BiLogOut color="#fafafa" />
           </IconButton>
         </div>
         <div className={userDadosStyle.userDadoscontainerImg}>

@@ -57,7 +57,7 @@ const montarDadosPerfil = ({
   telefone: dadosForm.telefone.trim(),
   email: dadosForm.email.trim().toLowerCase(),
   tipoUsuario: 'regular' as const,
-  imgPerfil: 'src/assets/avatar/vista-da-mulher-3d.jpg',
+  imgPerfil: 'src/assets/noPhoto.jpg',
 });
 
 export const CreateUserComponent = () => {

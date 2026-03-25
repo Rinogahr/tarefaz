@@ -198,11 +198,6 @@ export const Home = () => {
   return (
     <div className={homeStyle.homeContainer}>
       <div className={homeStyle.homeChildren}>
-        <div className={homeStyle.headerActions}>
-          <button className={homeStyle.logoutButton} type="button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
         <div className={homeStyle.dadosPerfil}>
           <UserDados
             userId={usuarioResumo?.usuario.id}
@@ -210,6 +205,7 @@ export const Home = () => {
             name={nomeUsuario}
             info={usuarioResumo?.usuario.dados ?? ''}
             btEdite={handleEditPerfil}
+            btLogout={handleLogout}
             vlPendentes={usuarioResumo?.tarefasPendentes ?? 0}
             vlConcluidas={usuarioResumo?.tarefasConcluidas ?? 0}
             vlTotal={totalGeral}

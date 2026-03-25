@@ -21,7 +21,19 @@
       "telefone": "81998600486",
       "email": "zaminha@email.com",
       "tipoUsuario": "regular",
-      "imgPerfil": "src/assets/avatar/vista-da-mulher-3d.jpg"
+      "imgPerfil": "src/assets/avatar/_2.jpg",
+      "imgPerfilPath": "src/assets/avatar/_2.jpg"
+    },
+    {
+      "id": 3,
+      "login": "batataF",
+      "nome": "Batata",
+      "sobrenome": "Frita",
+      "dataNascimento": "2021-01-01",
+      "telefone": "8199999999",
+      "email": "batata@email.com",
+      "tipoUsuario": "regular",
+      "imgPerfil": "src/assets/noPhoto.jpg"
     }
   ]
 }
