@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material';
 import userDadosStyle from './user-dados.module.css';
-import { BiEdit, BiLogOut } from 'react-icons/bi';
+import { BiLogOut } from 'react-icons/bi';
 import { Botao } from '../bt-component/botao';
 import { useNavigate } from 'react-router-dom';
 
