@@ -9,10 +9,10 @@ export const DashBoard = () => {
                 <div>
                     <h1>Dashboard</h1>
                 </div>
-                <div className={dashBoardStyle.btsContainer}>
+                {/* <div className={dashBoardStyle.btsContainer}>
                     <div>bt1</div>
                     <div>bt2</div>
-                </div>
+                </div> */}
             </div>
             <div className={dashBoardStyle.atalho2Container}>
                 <Atalho model="modeloDois" titulo="botão atalho - 1" bgColor="aquamarine"/>
