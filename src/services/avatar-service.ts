@@ -19,8 +19,12 @@ export const salvarAvatar = async ({ dataUrl, fileName }: SalvarAvatarInput): Pr
     }),
   });
 
+  if (response.status === 404) {
+    return dataUrl;
+  }
+
   if (!response.ok) {
-    throw new Error('Não foi possível salvar a imagem de perfil');
+    throw new Error(`Erro ao salvar imagem: ${response.status}`);
   }
 
   const payload = (await response.json()) as SalvarAvatarResponse;

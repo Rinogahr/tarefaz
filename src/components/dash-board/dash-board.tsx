@@ -15,12 +15,12 @@ export const DashBoard = () => {
                 </div> */}
             </div>
             <div className={dashBoardStyle.atalho2Container}>
-                <Atalho model="modeloDois" titulo="botão atalho - 1" bgColor="aquamarine"/>
-                <Atalho model="modeloDois" titulo="botão atalho - 2" bgColor="cornflowerBlue"/>
-                <Atalho model="modeloDois" titulo="botão atalho - 3" bgColor="lightPink"/>
-                <Atalho model="modeloDois" titulo="botão atalho - 4" bgColor="lightSteelBlue"/>
-                <Atalho model="modeloDois" titulo="botão atalho - 5" bgColor="paleTurquoise"/>
-                <Atalho model="modeloDois" titulo="botão atalho - 6" bgColor="sandyBrown"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="aquamarine"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="cornflowerBlue"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="lightPink"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="lightSteelBlue"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="paleTurquoise"/>
+                <Atalho model="modeloDois" titulo="Exemplo de Component" bgColor="sandyBrown"/>
             </div>
         </div>
     );

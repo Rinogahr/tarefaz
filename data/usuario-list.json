@@ -34,6 +34,18 @@
       "email": "batata@email.com",
       "tipoUsuario": "regular",
       "imgPerfil": "src/assets/noPhoto.jpg"
+    },
+    {
+      "id": "4",
+      "login": "eliseu",
+      "nome": "Eliseu",
+      "sobrenome": "Rodrigues",
+      "dataNascimento": "2000-01-01",
+      "telefone": "81999999999",
+      "email": "eliseu@email.com",
+      "tipoUsuario": "regular",
+      "imgPerfil": "src/assets/avatar/eliseu_4.jpg",
+      "imgPerfilPath": "src/assets/avatar/eliseu_4.jpg"
     }
   ]
 }

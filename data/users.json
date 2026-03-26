@@ -11,9 +11,14 @@
       "senha": "minha123"
     },
     {
-      "id": 3,
+      "id": "3",
       "login": "batataF",
       "senha": "batata123"
+    },
+    {
+      "id": 4,
+      "login": "eliseu",
+      "senha": "seu123"
     }
   ]
 }

@@ -91,13 +91,35 @@ export const criarUsuarioRepository = (input: CriarUsuarioRepositoryInput = {}):
     usuarioId: number;
     payload: AtualizarUsuarioPerfilInput;
   }): Promise<UsuarioPerfilModel> => {
-    const response = await fetcher(montarUrl({ path: `${usuariosResourcePath}/${usuarioId}` }), {
+    const recursoUsuarioPath = `${usuariosResourcePath}/${usuarioId}`;
+    const urlRecursoUsuario = montarUrl({ path: recursoUsuarioPath });
+    let response = await fetcher(urlRecursoUsuario, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
+
+    if (response.status === 404) {
+      const responsePerfilAtual = await fetcher(urlRecursoUsuario, {
+        method: 'GET',
+      });
+      const payloadPerfilAtual = await validarResposta({ response: responsePerfilAtual });
+      const perfilAtual = validarUsuarioPerfil(payloadPerfilAtual);
+      const payloadPut = {
+        ...perfilAtual,
+        ...payload,
+      };
+
+      response = await fetcher(urlRecursoUsuario, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payloadPut),
+      });
+    }
 
     const responsePayload = await validarResposta({ response });
     return validarUsuarioPerfil(responsePayload);
