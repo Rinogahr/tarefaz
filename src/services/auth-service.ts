@@ -1,89 +1,28 @@
-import { z } from 'zod';
-import usersData from '../../data/users.json';
+import { criarAuthController } from '../modules/auth/controller/auth-controller';
+import { RegistrarUsuarioInput, UsuarioAutenticacaoModel } from '../modules/auth/model/auth-model';
+import { criarAuthRepository } from '../modules/auth/model/auth-repository';
+import { criarAuthSessionView } from '../modules/auth/view/auth-session-view';
 
-const authApiBaseUrl = 'http://localhost:5002';
-const usersResourcePath = '/users';
-const authStorageKey = 'auth-user';
+const authController = criarAuthController({
+  authRepository: criarAuthRepository({
+    fetcher: async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+      if (typeof globalThis.fetch !== 'function') {
+        throw new Error('Fetch indisponível');
+      }
 
-const usuarioAutenticacaoSchema = z.object({
-  id: z.coerce.number().int().positive(),
-  login: z.string().min(1),
-  senha: z.string().min(1),
+      return globalThis.fetch(input, init);
+    },
+  }),
 });
 
-const usuariosAutenticacaoSchema = z.array(usuarioAutenticacaoSchema);
+const authSessionView = criarAuthSessionView();
 
-interface UsersDataModel {
-  users: unknown;
-}
+export type { UsuarioAutenticacaoModel };
 
-export interface UsuarioAutenticacaoModel {
-  id: number;
-  login: string;
-  senha: string;
-}
+export const buscarUsuarios = async (): Promise<UsuarioAutenticacaoModel[]> => authController.buscarUsuarios();
 
-interface RegistrarUsuarioInput {
-  id?: number;
-  login: string;
-  senha: string;
-}
-
-const montarUrl = ({ path }: { path: string }): string => `${authApiBaseUrl}${path}`;
-
-const validarUsuarios = (payload: unknown): UsuarioAutenticacaoModel[] => usuariosAutenticacaoSchema.parse(payload);
-
-const extrairUsuariosFallback = (): UsuarioAutenticacaoModel[] => {
-  const payload = (usersData as UsersDataModel).users;
-  return validarUsuarios(payload);
-};
-
-export const buscarUsuarios = async (): Promise<UsuarioAutenticacaoModel[]> => {
-  try {
-    const response = await fetch(montarUrl({ path: usersResourcePath }), {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Erro na requisição: ${response.status}`);
-    }
-
-    const payload = await response.json();
-    return validarUsuarios(payload);
-  } catch {
-    return extrairUsuariosFallback();
-  }
-};
-
-export const registrarUsuario = async ({
-  id,
-  login,
-  senha,
-}: RegistrarUsuarioInput): Promise<UsuarioAutenticacaoModel> => {
-  const usuarios = await buscarUsuarios();
-  const usuarioExistente = usuarios.find((usuario) => usuario.login === login);
-  if (usuarioExistente) {
-    throw new Error('Usuário já cadastrado');
-  }
-
-  const proximoId = usuarios.reduce<number>((maiorId, usuario) => Math.max(maiorId, usuario.id), 0) + 1;
-  const payloadComId = { id: id ?? proximoId, login, senha };
-
-  const response = await fetch(montarUrl({ path: usersResourcePath }), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payloadComId),
-  });
-
-  if (!response.ok) {
-    throw new Error('Não foi possível cadastrar usuário');
-  }
-
-  const responsePayload = await response.json();
-  return usuarioAutenticacaoSchema.parse(responsePayload);
-};
+export const registrarUsuario = async (input: RegistrarUsuarioInput): Promise<UsuarioAutenticacaoModel> =>
+  authController.registrarUsuario(input);
 
 export const autenticarUsuario = async ({
   login,
@@ -91,19 +30,10 @@ export const autenticarUsuario = async ({
 }: {
   login: string;
   senha: string;
-}): Promise<boolean> => {
-  const usuarios = await buscarUsuarios();
-  return usuarios.some((usuario) => usuario.login === login && usuario.senha === senha);
-};
+}): Promise<boolean> => authController.autenticarUsuario({ login, senha });
 
-export const buscarUsuarioPorLogin = async ({
-  login,
-}: {
-  login: string;
-}): Promise<UsuarioAutenticacaoModel | null> => {
-  const usuarios = await buscarUsuarios();
-  return usuarios.find((usuario) => usuario.login === login) ?? null;
-};
+export const buscarUsuarioPorLogin = async ({ login }: { login: string }): Promise<UsuarioAutenticacaoModel | null> =>
+  authController.buscarUsuarioPorLogin({ login });
 
 export const atualizarSenhaUsuario = async ({
   usuarioId,
@@ -111,29 +41,22 @@ export const atualizarSenhaUsuario = async ({
 }: {
   usuarioId: number;
   senha: string;
-}): Promise<UsuarioAutenticacaoModel> => {
-  const response = await fetch(montarUrl({ path: `${usersResourcePath}/${usuarioId}` }), {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ senha }),
-  });
+}): Promise<UsuarioAutenticacaoModel> => authController.atualizarSenhaUsuario({ usuarioId, senha });
 
-  if (!response.ok) {
-    throw new Error('Não foi possível atualizar a senha');
-  }
+export const atualizarLoginUsuario = async ({
+  usuarioId,
+  login,
+}: {
+  usuarioId: number;
+  login: string;
+}): Promise<UsuarioAutenticacaoModel> => authController.atualizarLoginUsuario({ usuarioId, login });
 
-  const payload = await response.json();
-  return usuarioAutenticacaoSchema.parse(payload);
-};
+export const excluirUsuario = async ({ usuarioId }: { usuarioId: number }): Promise<void> =>
+  authController.excluirUsuario({ usuarioId });
 
-export const salvarSessaoAutenticada = ({ login }: { login: string }): void => {
-  localStorage.setItem(authStorageKey, login);
-};
+export const salvarSessaoAutenticada = ({ login }: { login: string }): void =>
+  authSessionView.salvarSessaoAutenticada({ login });
 
-export const limparSessaoAutenticada = (): void => {
-  localStorage.removeItem(authStorageKey);
-};
+export const limparSessaoAutenticada = (): void => authSessionView.limparSessaoAutenticada();
 
-export const possuiSessaoAutenticada = (): boolean => Boolean(localStorage.getItem(authStorageKey));
+export const possuiSessaoAutenticada = (): boolean => authSessionView.possuiSessaoAutenticada();

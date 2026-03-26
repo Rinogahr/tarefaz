@@ -5,6 +5,7 @@ import { LoginScreen } from '../components/login-screen/login-screen';
 import { Tarefa } from '../components/tarefa-component/tarefa';
 import { CreateUserComponent } from '../components/create-user-component/create-user-component';
 import { EditUserComponent } from '../components/edit-user-component/edit-user-component';
+import { UserListComponent } from '../components/user-list-component/user-list-component';
 import { possuiSessaoAutenticada } from '../services/auth-service';
 
 const RotaProtegida = () => {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: '/home/edit-user/:id',
         element: <EditUserComponent />,
+      },
+      {
+        path: '/home/users',
+        element: <UserListComponent />,
       },
       {
         path: '/home',

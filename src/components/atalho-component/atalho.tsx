@@ -3,6 +3,8 @@ import atalhoStyle from './atalho.module.css';
 interface AtalhoProps {
   titulo: string;
   onClick?: () => void;
+  iconSrc?: string;
+  iconAlt?: string;
   bgColor?:
     | 'paleGreen'
     | 'cornflowerBlue'
@@ -27,6 +29,7 @@ export const Atalho = (atalho: AtalhoProps) => {
 
   return (
     <div className={`${containerClass} ${bgColorClass} ${txtColorClass}`} onClick={atalho.onClick}>
+      {atalho.iconSrc && <img alt={atalho.iconAlt ?? atalho.titulo} className={atalhoStyle.atalhoIcon} src={atalho.iconSrc} />}
       <h3>{atalho.titulo}</h3>
     </div>
   );

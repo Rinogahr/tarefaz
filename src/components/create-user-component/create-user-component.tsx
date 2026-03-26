@@ -1,10 +1,10 @@
 import { Button, TextField } from '@mui/material';
-import { ChangeEvent, FormEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 import { registrarUsuario } from '../../services/auth-service';
 import { LoadingComponent } from '../loading-component/loading-component';
-import { criarPerfilUsuario, gerarProximoIdUsuario } from '../../services/usuario-service';
+import { buscarPerfilPorLogin, criarPerfilUsuario, gerarProximoIdUsuario } from '../../services/usuario-service';
 import createUserStyle from './create-user-component.module.css';
 
 interface CreateUserFormState {
@@ -40,7 +40,7 @@ const aguardarCincoSegundos = (): Promise<void> =>
   });
 
 const obterRotaRetorno = ({ origem }: { origem: string | null }): string =>
-  origem === 'login' ? '/login' : '/home';
+  origem === 'login' ? '/login' : origem === 'users' ? '/home/users' : '/home';
 
 const montarDadosPerfil = ({
   id,
@@ -77,9 +77,28 @@ export const CreateUserComponent = () => {
   const [mensagemErro, setMensagemErro] = useState<string>('');
   const [mensagemSucesso, setMensagemSucesso] = useState<string>('');
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+  const [isAdministrador, setIsAdministrador] = useState<boolean>(false);
 
   const origemLogin = useMemo<boolean>(() => origem === 'login', [origem]);
-  const isAdministrador = useMemo<boolean>(() => localStorage.getItem('auth-user') === 'admin', []);
+
+  useEffect(() => {
+    const carregarPermissao = async (): Promise<void> => {
+      try {
+        const loginSessao = localStorage.getItem('auth-user');
+        if (!loginSessao) {
+          setIsAdministrador(false);
+          return;
+        }
+
+        const perfilSessao = await buscarPerfilPorLogin({ login: loginSessao });
+        setIsAdministrador(perfilSessao?.tipoUsuario === 'admin');
+      } catch {
+        setIsAdministrador(false);
+      }
+    };
+
+    void carregarPermissao();
+  }, []);
 
   const handleChangeCampo = ({
     event,

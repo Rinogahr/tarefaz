@@ -35,6 +35,7 @@ export const Home = () => {
   const [isLoadingAberturaForm, setIsLoadingAberturaForm] = useState<boolean>(false);
   const [usuariosRegistrados, setUsuariosRegistrados] = useState<UsuarioModel[]>([]);
   const [usuarioLogadoId, setUsuarioLogadoId] = useState<number | null>(null);
+  const [isAdministrador, setIsAdministrador] = useState<boolean>(false);
 
   const handleEditPerfil = (): void => {
     const idDestino = usuarioLogadoId ?? usuarioResumo?.usuario.id;
@@ -55,6 +56,7 @@ export const Home = () => {
       const perfilPorId = new Map(perfisUsuarios.map((perfil) => [perfil.id, perfil]));
       const idUsuarioLogado = perfilUsuarioLogado?.id ?? null;
       setUsuarioLogadoId(idUsuarioLogado);
+      setIsAdministrador(perfilUsuarioLogado?.tipoUsuario === 'admin');
       const tarefas = await buscarTarefas();
       setTotalGeral(tarefas.length);
 
@@ -173,8 +175,6 @@ export const Home = () => {
     return `${usuarioResumo.usuario.id} - ${usuarioResumo.usuario.name}`;
   }, [usuarioResumo]);
 
-  const isAdministrador = useMemo<boolean>(() => localStorage.getItem('auth-user') === 'admin', []);
-
   const abrirFormularioCriacao = async (): Promise<void> => {
     setIsLoadingAberturaForm(true);
     await aguardarTresSegundos();
@@ -242,15 +242,13 @@ export const Home = () => {
             bgTxtColor="textColorDark"
             onClick={() => navigate(`/home/task/${usuarioResumo?.usuario.id}`)}
           />
-          {isAdministrador && (
-            <Atalho
-              model="modeloUm"
-              titulo="Novo usuário"
-              bgColor="aquamarine"
-              bgTxtColor="textColorDark"
-              onClick={() => navigate('/home/create-user')}
-            />
-          )}
+          <Atalho
+            model="modeloUm"
+            titulo="Usuários"
+            bgColor="aquamarine"
+            bgTxtColor="textColorDark"
+            onClick={() => navigate('/home/users')}
+          />
         </div>
         <Outlet
           context={{

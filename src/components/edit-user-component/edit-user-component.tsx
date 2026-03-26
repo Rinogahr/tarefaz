@@ -1,14 +1,15 @@
 import { Button, MenuItem, TextField } from '@mui/material';
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
-import { atualizarSenhaUsuario, buscarUsuarioPorLogin } from '../../services/auth-service';
+import { atualizarLoginUsuario, atualizarSenhaUsuario } from '../../services/auth-service';
 import { salvarAvatar } from '../../services/avatar-service';
 import { LoadingComponent } from '../loading-component/loading-component';
 import { atualizarPerfilUsuario, buscarPerfilPorId, buscarPerfilPorLogin } from '../../services/usuario-service';
 import editUserStyle from './edit-user-component.module.css';
 
 interface EditUserFormState {
+  login: string;
   nome: string;
   sobrenome: string;
   dataNascimento: string;
@@ -23,6 +24,7 @@ interface EditUserFormState {
 
 const formSchema = z
   .object({
+    login: z.string().min(3, 'Informe um login com ao menos 3 caracteres'),
     nome: z.string().min(2, 'Informe o nome'),
     sobrenome: z.string().min(2, 'Informe o sobrenome'),
     dataNascimento: z.iso.date('Data de nascimento inválida'),
@@ -77,8 +79,11 @@ const lerArquivoComoDataUrl = ({ file }: { file: File }): Promise<string> =>
 export const EditUserComponent = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [searchParams] = useSearchParams();
+  const origem = searchParams.get('from');
   const usuarioId = Number(params.id ?? 0);
   const [formState, setFormState] = useState<EditUserFormState>({
+    login: '',
     nome: '',
     sobrenome: '',
     dataNascimento: '',
@@ -93,9 +98,10 @@ export const EditUserComponent = () => {
   const [mensagemErro, setMensagemErro] = useState<string>('');
   const [isLoadingTela, setIsLoadingTela] = useState<boolean>(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
-  const [usuarioEditadoEhAdmin, setUsuarioEditadoEhAdmin] = useState<boolean>(false);
+  const [loginOriginalUsuario, setLoginOriginalUsuario] = useState<string>('');
+  const [idUsuarioSessao, setIdUsuarioSessao] = useState<number | null>(null);
+  const [isAdministrador, setIsAdministrador] = useState<boolean>(false);
 
-  const isAdministrador = useMemo<boolean>(() => localStorage.getItem('auth-user') === 'admin', []);
   const loginSessao = useMemo<string>(() => localStorage.getItem('auth-user') ?? '', []);
 
   useEffect(() => {
@@ -111,8 +117,10 @@ export const EditUserComponent = () => {
         if (!perfilSessao) {
           throw new Error('Sessão de usuário inválida.');
         }
+        setIdUsuarioSessao(perfilSessao.id);
+        setIsAdministrador(perfilSessao.tipoUsuario === 'admin');
 
-        const podeEditar = isAdministrador || perfilSessao.id === usuarioId;
+        const podeEditar = perfilSessao.tipoUsuario === 'admin' || perfilSessao.id === usuarioId;
         if (!podeEditar) {
           throw new Error('Você não tem permissão para editar este usuário.');
         }
@@ -121,9 +129,10 @@ export const EditUserComponent = () => {
         if (!perfil) {
           throw new Error('Usuário não encontrado.');
         }
-        setUsuarioEditadoEhAdmin(perfil.tipoUsuario === 'admin');
+        setLoginOriginalUsuario(perfil.login);
 
         setFormState({
+          login: perfil.login,
           nome: perfil.nome,
           sobrenome: perfil.sobrenome,
           dataNascimento: perfil.dataNascimento,
@@ -145,7 +154,7 @@ export const EditUserComponent = () => {
     };
 
     void carregarUsuario();
-  }, [isAdministrador, loginSessao, usuarioId]);
+  }, [loginSessao, usuarioId]);
 
   const handleChangeCampo = ({
     event,
@@ -183,6 +192,11 @@ export const EditUserComponent = () => {
   };
 
   const cancelarEdicao = (): void => {
+    if (origem === 'users') {
+      navigate('/home/users');
+      return;
+    }
+
     navigate('/home');
   };
 
@@ -216,6 +230,7 @@ export const EditUserComponent = () => {
       await atualizarPerfilUsuario({
         usuarioId,
         payload: {
+          login: formState.login.trim(),
           nome: formState.nome.trim(),
           sobrenome: formState.sobrenome.trim(),
           dataNascimento: formState.dataNascimento,
@@ -227,15 +242,22 @@ export const EditUserComponent = () => {
         },
       });
 
+      if (formState.login.trim() !== loginOriginalUsuario) {
+        await atualizarLoginUsuario({
+          usuarioId,
+          login: formState.login.trim(),
+        });
+      }
+
       if (formState.senha.trim().length > 0) {
-        const usuarioAuth = await buscarUsuarioPorLogin({ login: loginSessao });
-        if (!usuarioAuth || usuarioAuth.id <= 0) {
-          throw new Error('Sessão inválida para atualizar senha.');
-        }
         await atualizarSenhaUsuario({
           usuarioId,
           senha: formState.senha.trim(),
         });
+      }
+
+      if (idUsuarioSessao === usuarioId && formState.login.trim() !== loginSessao) {
+        localStorage.setItem('auth-user', formState.login.trim());
       }
 
       navigate('/home');
@@ -261,6 +283,12 @@ export const EditUserComponent = () => {
             <img alt="Avatar do usuário" className={editUserStyle.avatarPreview} src={avatarPreviewSrc} />
             <p className={editUserStyle.avatarName}>{formState.imgPerfilPath || 'Sem arquivo selecionado'}</p>
           </div>
+          <TextField
+            label="Login"
+            value={formState.login}
+            onChange={(event) => handleChangeCampo({ event, campo: 'login' })}
+            required
+          />
           <TextField
             label="Nome"
             value={formState.nome}
@@ -294,7 +322,7 @@ export const EditUserComponent = () => {
             onChange={(event) => handleChangeCampo({ event, campo: 'email' })}
             required
           />
-          {isAdministrador && usuarioEditadoEhAdmin && (
+          {isAdministrador && (
             <TextField
               label="Tipo de Usuário"
               select

@@ -62,9 +62,6 @@ export const UserDados = (props: UserProps) => {
     <div className={userDadosStyle.userDadoscontainer}>
       <div className={userDadosStyle.userDadoscontainerhildren}>
         <div className={userDadosStyle.profileEdit}>
-          <IconButton aria-label="Perfil" onClick={props.btEdite}>
-            <BiEdit color="#fafafa" />
-          </IconButton>
           <IconButton aria-label="Perfil" onClick={props.btLogout}>
             <BiLogOut color="#fafafa" />
           </IconButton>

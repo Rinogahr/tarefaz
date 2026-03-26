@@ -17,8 +17,9 @@
 .profileEdit{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: end;
     align-items: end;
+    padding-right: 1rem;
 }
 
 .userDadoscontainerImg{
